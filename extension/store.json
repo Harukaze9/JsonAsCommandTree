@@ -1,0 +1,39 @@
+{
+  "alias": {
+    "my-ls": "ls -lrt",
+    "temp": "ls /mnt/c/"
+  },
+  "clipboard": {
+    "test": "iamatest",
+    "same": "samesan daisuki desu",
+    "wterm-settings": "/mnt/c/Users/umineko/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState",
+    "aojicpc-id": "ftl",
+    "vivaldi-id": "shimaenaga",
+    "vivaldi-pw": "123gomahuazarashi",
+    "atcoder-id": "ftl",
+    "rename": "rename \"s/.webp/.png/;\" *",
+    "onamae-id": "10333372",
+    "riot-games-id": "umiushy",
+    "riot-games-pw": "123gomahuazarashi",
+    "1_pass_masterpassword": "goma3211ikn",
+    "genshin-id": "shimaenaga@vivaldi.net",
+    "genshin-pw": "32113211h",
+    "jenkins-start": "sudo service jenkins start",
+    "mail-tutanota": "smeng@tutanota.com",
+    "hugging-face-token": "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",
+    "wendb-apikeys": "731b7451f39950c9822808da725a2d24bb1c6531"
+  },
+  "goto": {
+    "ssh": "/home/hiyoko/.ssh/",
+    "zsh": "/home/hiyoko/.zsh/",
+    "gaho": "/home/hiyoko/gaho/",
+    "jenkins-workspace": "/var/lib/jenkins/workspace/",
+    "default": "/mnt/c/Users/umineko/",
+    "web": "/home/hiyoko/gaho/web/",
+    "kamo": "/home/hiyoko/kamo-prj/kamo/top/",
+    "jbcc": "/home/hiyoko/code/json_based_command_completion"
+  },
+  "note": {
+    "hoge": "/home/hiyoko/jbcc_notes/hoge.md"
+  }
+}
