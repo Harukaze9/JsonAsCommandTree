@@ -85,7 +85,7 @@ __jbcc_store()
         ;;
         exec)
         local value=`jq -r ".${arg_category}.\"${arg_key}\"" ${__jbcc_store_path}`
-        exec_command=`echo ${arg_execution} | sed "s#jbcc_VALUE#${value}#g"` # use '#' as a sed seperator.
+        exec_command=`echo ${arg_execution} | sed "s#JBCC_VALUE#${value}#g"` # use '#' as a sed seperator.
         eval "$exec_command"
         ;;
         *)
