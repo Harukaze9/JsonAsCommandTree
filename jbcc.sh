@@ -90,9 +90,10 @@ _jbcc_completions()
     completion_list=${trimed_jq_result}
   elif [[ ${root_jq_result[@]} =~ "__exec" ]]; then
     # echo "params  is" ${params} >> ${__jbcc_log_path}
-    local param_num=`echo ${params} | wc -w`
+    local param_num=`echo ${params} | wc -w | sed 's/ //g'`
     local comp_command="${__jbcc_comp_key}${param_num}"
     exec_command=`jq -r "try (${static_path}.${comp_command})" ${source_json_path}`
+    # echo "query: " "jq -r \"try (${static_path}.${comp_command})\" ${source_json_path}" >> ${__jbcc_log_path}
     # echo "exec_command: " ${exec_command} >> ${__jbcc_log_path}
     if [[ ${exec_command} != "null" ]]; then
       completion_list=`eval ${exec_command}`
