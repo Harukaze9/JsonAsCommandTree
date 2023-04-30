@@ -1,5 +1,3 @@
-#!/bin/bash
-
 cdd(){
     if [ $# -lt 1 ]; then
         jj goto exec "default"

@@ -1,5 +1,3 @@
-#!/bin/bash
-
 # ================== config ====================== #
 __jbcc_exec_key="\"__exec\""
 __jbcc_comp_key="__comp_"
@@ -7,8 +5,8 @@ __jbcc_comp_key="__comp_"
 
 # =============== load file paths ==================== #
 if [ -n "$BASH_VERSION" ]; then
-  __jbcc_root_dir=$(cd $(dirname ${BASH_SOURCE:-$0}); pwd)
-elif [ -n "$ZSH_VERSION" ]; then
+  __jbcc_root_dir=$(cd $(dirname ${BASH_SOURCE:-$0}); pwd) # for bash
+elif [ -n "$ZSH_VERSION" ]; then # for zsh
   __jbcc_root_dir=$(dirname ${0})
 else
   # path retrieval may fail (depending on the shell's specifications)

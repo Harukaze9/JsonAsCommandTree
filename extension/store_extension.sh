@@ -1,5 +1,3 @@
-#!/bin/bash
-
 __jbcc_store_path="${__jbcc_root_dir}/extension/store.json" #
 
 __jbcc_store_show()
