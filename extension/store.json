@@ -1,7 +1,7 @@
 {
   "alias": {
     "my-ls": "ls -lrt",
-    "temp": "ls /mnt/c/"
+    "source-zsh": "source ~/.zshrc"
   },
   "clipboard": {
     "test": "iamatest",

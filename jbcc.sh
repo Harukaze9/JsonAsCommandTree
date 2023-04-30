@@ -59,12 +59,15 @@ jj() {
 
   local command_body=`jq -r ${static_path}.${__jbcc_exec_key} ${source_json_path}`
   local count=0
-  for element in $(echo $params); do
+  eval "param_array=($params)" # create array by single quotes
+  for element in $param_array; do
   arg=`echo $element | sed "s/'//g"`
-  command_body=`echo $command_body | sed "s/{${count}}/${arg}/g"`
+  # echo "try to set: [${arg}] to [${command_body}]"
+  command_body=`echo $command_body | sed "s#{${count}}#${arg}#g"` # use '#' as a sed seperator.
   ((count++))
   done
 
+  # echo "command body is:" ${command_body}
   # return
   local exec_command=$(bash -c "printf \"${command_body}\" ${params}")
   # echo "exec commanad is: ${exec_command}"
