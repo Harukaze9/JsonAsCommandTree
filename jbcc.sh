@@ -4,6 +4,7 @@ __jbcc_comp_key="__comp_"
 # ================================================ #
 
 # =============== load file paths ==================== #
+# Use script's location as the root directory
 if [ -n "$BASH_VERSION" ]; then
   __jbcc_root_dir=$(cd $(dirname ${BASH_SOURCE:-$0}); pwd) # for bash
 elif [ -n "$ZSH_VERSION" ]; then # for zsh
@@ -14,7 +15,7 @@ else
 fi
 
 __jbcc_log_path="${__jbcc_root_dir}/jbcc.log"
-__jbcc_source_json_path="${__jbcc_root_dir}/completion.json" # json file that defines command completion information
+__jbcc_source_json_path="${__jbcc_root_dir}/command.json" # json file that defines commands and corresponding completions
 __jbcc_sources_directory_path="${__jbcc_root_dir}/source"
 
 if [ ! -e ${__jbcc_source_json_path} ]; then
@@ -62,7 +63,7 @@ jj() {
   # read source_json_path static_path params <<< $(_jbcc_make_path $(for i in "$@"; do echo -n "\"$i\" "; done))
   read source_json_path static_path params <<< $(_jbcc_make_path "$@")
   if [[ -z $source_json_path ]]; then
-    echo "Error: no execution command is defined at [$@] in \"${__jbcc_source_json_path}\""
+    echo "Error: no path is defined at [$@] in \"${__jbcc_source_json_path}\""
     return 1;
   fi
 

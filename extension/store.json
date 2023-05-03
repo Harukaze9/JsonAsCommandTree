@@ -33,7 +33,7 @@
     "jbcc": "/home/hiyoko/code/json_based_command_completion"
   },
   "note": {
-    "hoge": "/home/hiyoko/jbcc_notes/hoge.md",
-    "test": "/home/hiyoko/jbcc_notes/test.md"
+    "test": "/home/hiyoko/jbcc_notes/test.md",
+    "jbcclog": "/home/hiyoko/code/json_based_command_completion/jbcc.log"
   }
 }
