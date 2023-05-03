@@ -51,7 +51,7 @@ __jbcc_store()
     fi
 
     if [ -z "$arg_description" ]; then
-        arg_description=$arg_category
+        local arg_description=$arg_category
     fi
 
     case $arg_operation in

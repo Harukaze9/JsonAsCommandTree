@@ -2,12 +2,9 @@
   "alias": {
     "my-ls": "ls -lrt",
     "source-zsh": "source ~/.zshrc",
-    "hogegee": "aaaa2 uni",
     "hoge-gee": "aaaa2 uni"
   },
   "clipboard": {
-    "test": "iamatest",
-    "same": "samesan daisuki desu",
     "wterm-settings": "/mnt/c/Users/umineko/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState",
     "aojicpc-id": "ftl",
     "vivaldi-id": "shimaenaga",

@@ -15,7 +15,7 @@ fi
 
 __jbcc_log_path="${__jbcc_root_dir}/jbcc.log"
 __jbcc_source_json_path="${__jbcc_root_dir}/completion.json" # json file that defines command completion information
-__jbcc_sources_directory_path="${__jbcc_root_dir}/sources"
+__jbcc_sources_directory_path="${__jbcc_root_dir}/source"
 
 if [ ! -e ${__jbcc_source_json_path} ]; then
   echo "not found json command source at: ${__jbcc_source_json_path}"
@@ -30,20 +30,22 @@ _jbcc_make_path()
   local static_path=".root" # current key path of source json
   local params=()
   local source_json_path=${__jbcc_source_json_path}
+  # echo "number of param is..." $#  >> ${__jbcc_log_path}
+  # echo "content of param is..." $@  >> ${__jbcc_log_path}
   for arg in "$@"
   do
-    echo $source_json_path $static_path $params >> ${__jbcc_log_path}
+    # echo $source_json_path $static_path $params >> ${__jbcc_log_path}
     if [[ -n `jq "try(${static_path}.\"${arg}\") | select(type==\"string\")" ${source_json_path}` ]]; then
       source_json_path=`jq -r "${static_path}.\"${arg}\"" ${source_json_path}`
-      echo "now source_json_path is" $source_json_path >> ${__jbcc_log_path}
-      echo "apply" $__jbcc_sources_directory_path >> ${__jbcc_log_path}
-      source_json_path=`echo $source_json_path | sed "s#__JBCC_SOURCES__#${__jbcc_sources_directory_path}#g"`
-      echo "finally source_json_path is" $source_json_path >> ${__jbcc_log_path}
+      # echo "now source_json_path is" $source_json_path >> ${__jbcc_log_path}
+      # echo "apply" $__jbcc_sources_directory_path >> ${__jbcc_log_path}
+      source_json_path=`echo $source_json_path | sed "s#__JBCC_SOURCE_DIR__#${__jbcc_sources_directory_path}#g"`
+      # echo "finally source_json_path is" $source_json_path >> ${__jbcc_log_path}
       static_path=".root"
     elif [[ `jq "try(${static_path}) | has(\"${arg}\")" ${source_json_path}` == "true" ]]; then
       static_path+=.\"${arg}\" # escape to allow hyphen
     elif [[ `jq "try(${static_path}) | has(\"__exec\")" ${source_json_path}` == "true" ]]; then
-      params+="\'${arg}\'"
+      params+="\'${arg}\' "
     else
       # echo "invalid input: static_path: ${static_path}, arg: ${arg}" >> ${__jbcc_log_path}
       return 1;
@@ -56,7 +58,9 @@ _jbcc_make_path()
 # main func
 jj() {
   local static_path params source_json_path
-  read source_json_path static_path params <<< $(_jbcc_make_path $@)
+  # echo "number of param is" $# 
+  # read source_json_path static_path params <<< $(_jbcc_make_path $(for i in "$@"; do echo -n "\"$i\" "; done))
+  read source_json_path static_path params <<< $(_jbcc_make_path "$@")
   if [[ -z $source_json_path ]]; then
     echo "Error: no execution command is defined at [$@] in \"${__jbcc_source_json_path}\""
     return 1;
@@ -65,7 +69,8 @@ jj() {
   local command_body=`jq -r ${static_path}.${__jbcc_exec_key} ${source_json_path}`
   local count=0
   eval "param_array=($params)" # create array by single quoted words
-  for element in $param_array; do
+  # echo "param is ${params} and param_array is: ${param_array[@]} and array size is ${#param_array[@]}"
+  for element in "${param_array[@]}"; do
     arg=`echo $element | sed "s/'//g"`
     # echo "try to set: [${arg}] to [${command_body}]"
     command_body=`echo $command_body | sed "s#{${count}}#${arg}#g"` # use '#' as a sed seperator.
@@ -76,7 +81,6 @@ jj() {
     echo "Error: arguments are not enough" # TODO: more friendly message
     return 1;
   fi
-
 
   # echo "command body is:" ${command_body}
   # echo "params is: ${params}"
