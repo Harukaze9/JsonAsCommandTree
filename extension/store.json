@@ -1,7 +1,9 @@
 {
   "alias": {
     "my-ls": "ls -lrt",
-    "source-zsh": "source ~/.zshrc"
+    "source-zsh": "source ~/.zshrc",
+    "hogegee": "aaaa2 uni",
+    "hoge-gee": "aaaa2 uni"
   },
   "clipboard": {
     "test": "iamatest",

@@ -59,19 +59,27 @@ jj() {
 
   local command_body=`jq -r ${static_path}.${__jbcc_exec_key} ${source_json_path}`
   local count=0
-  eval "param_array=($params)" # create array by single quotes
+  eval "param_array=($params)" # create array by single quoted words
   for element in $param_array; do
-  arg=`echo $element | sed "s/'//g"`
-  # echo "try to set: [${arg}] to [${command_body}]"
-  command_body=`echo $command_body | sed "s#{${count}}#${arg}#g"` # use '#' as a sed seperator.
-  ((count++))
+    arg=`echo $element | sed "s/'//g"`
+    # echo "try to set: [${arg}] to [${command_body}]"
+    command_body=`echo $command_body | sed "s#{${count}}#${arg}#g"` # use '#' as a sed seperator.
+    ((count++))
   done
 
+  if [[ $command_body =~ "\{[0-9]\}" ]]; then
+    echo "Error: seems arguments are not enough" # TODO: more friendly message
+    return 1;
+  fi
+
+
   # echo "command body is:" ${command_body}
+  # echo "params is: ${params}"
   # return
-  local exec_command=$(bash -c "printf \"${command_body}\" ${params}")
+  # local exec_command=$(bash -c "printf \"${command_body}\" ${params}") # works well but cannot exec jj command...
+  # local exec_command=`printf ${command_body} ${params}` # also works well...??
   # echo "exec commanad is: ${exec_command}"
-  eval ${exec_command}
+  eval ${command_body}
 }
 
 # completion func
