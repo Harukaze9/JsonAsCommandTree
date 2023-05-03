@@ -1,98 +1,10 @@
 {
     "root": {
-        "_comp_util": {
-            "git-heads": {
-                "__exec": "git for-each-ref --format \"%(refname:lstrip=2)\" refs/heads"
-            },
-            "git-remotes": {
-                "__exec": "git for-each-ref --format \"%(refname:lstrip=3)\" refs/remotes"
-            }
-        },
-        "git": {
-            "update": {
-                "__exec": "git submodule update --recursive "
-            },
-            "add-commit": {
-                "__exec": "git add -u; git commit -m \\\"{0}\\\""
-            },
-            "fix-message": {
-                "__exec": "git commit --amend -m \\\"{0}\\\""
-            },
-            "remove-by-pattern": {
-                "__exec": "git branch -D $(jj _comp_util git-heads | grep {0})"
-            },
-            "comb": {
-                "__comp_0": "jj _comp_util git-remotes",
-                "__exec": "git checkout -fB my-{0} origin/{0}"
-            }
-        },
-        "alias": {
-            "__exec": "__jbcc_store -c alias -o list ",
-            "list": {
-                "__exec": "__jbcc_store -c alias -o list "
-            },
-            "add": {
-                "__exec": "__jbcc_store -c alias -o add -k {0} -v \"{1}\""
-            },
-            "remove": {
-                "__comp_0": "__jbcc_store -c alias -o complement",
-                "__exec": "__jbcc_store -c alias -o remove -k {0}"
-            },
-            "exec": {
-                "__comp_0": "__jbcc_store -c alias -o complement",
-                "__exec": "__jbcc_store -c alias -o exec -k {0} -e \"JBCC_VALUE\""
-            }
-        },
-        "clipboard": {
-            "__exec": "__jbcc_store -c clipboard -o list ",
-            "list": {
-                "__exec": "__jbcc_store -c clipboard -o list "
-            },
-            "add": {
-                "__exec": "__jbcc_store -c clipboard -o add -k {0} -v \"{1}\""
-            },
-            "remove": {
-                "__comp_0": "__jbcc_store -c clipboard -o complement",
-                "__exec": "__jbcc_store -c clipboard -o remove -k {0}"
-            },
-            "exec": {
-                "__comp_0": "__jbcc_store -c clipboard -o complement",
-                "__exec": "__jbcc_store -c clipboard -o exec -k {0} -e 'echo JBCC_VALUE' | clip.exe"
-            }
-        },
-        "goto": {
-            "__exec": "__jbcc_store -c goto -o list ",
-            "list": {
-                "__exec": "__jbcc_store -c goto -o list "
-            },
-            "add": {
-                "__exec": "__jbcc_store -c goto -o add -k {0} -v $(pwd)"
-            },
-            "remove": {
-                "__comp_0": "__jbcc_store -c goto -o complement",
-                "__exec": "__jbcc_store -c goto -o remove -k {0}"
-            },
-            "exec": {
-                "__comp_0": "__jbcc_store -c goto -o complement",
-                "__exec": "__jbcc_store -c goto -o exec -k {0} -e 'cd JBCC_VALUE'"
-            }
-        },
-        "note": {
-            "__exec": "__jbcc_store -c note -o list ",
-            "list": {
-                "__exec": "__jbcc_store -c note -o list "
-            },
-            "add": {
-                "__exec": "__jbcc_store -c note -o add -k {0} -v ~/jbcc_notes/{0}.md"
-            },
-            "remove": {
-                "__comp_0": "__jbcc_store -c note -o complement",
-                "__exec": "__jbcc_store -c note -o remove -k {0}; rm -f ~/jbcc_notes/{0}"
-            },
-            "exec": {
-                "__comp_0": "__jbcc_store -c note -o complement",
-                "__exec": "vim ~/jbcc_notes/{0}.md"
-            }
-        }
+        "_comp_util": "__JBCC_SOURCES__/_comp_util.json",
+        "git": "__JBCC_SOURCES__/git.json",
+        "alias": "__JBCC_SOURCES__/alias.json",
+        "clipboard": "__JBCC_SOURCES__/clipboard.json",
+        "goto": "__JBCC_SOURCES__/goto.json",
+        "note": "__JBCC_SOURCES__/note.json"
     }
 }

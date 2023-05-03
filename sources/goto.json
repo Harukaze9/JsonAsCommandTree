@@ -1,0 +1,19 @@
+{
+    "root": {
+        "__exec": "__jbcc_store -c goto -o list ",
+        "list": {
+            "__exec": "__jbcc_store -c goto -o list "
+        },
+        "add": {
+            "__exec": "__jbcc_store -c goto -o add -k {0} -v $(pwd)"
+        },
+        "remove": {
+            "__comp_0": "__jbcc_store -c goto -o complement",
+            "__exec": "__jbcc_store -c goto -o remove -k {0}"
+        },
+        "exec": {
+            "__comp_0": "__jbcc_store -c goto -o complement",
+            "__exec": "__jbcc_store -c goto -o exec -k {0} -e 'cd JBCC_VALUE'"
+        }
+    }
+}

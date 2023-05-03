@@ -1,0 +1,19 @@
+{
+    "root": {
+        "__exec": "__jbcc_store -c note -o list ",
+        "list": {
+            "__exec": "__jbcc_store -c note -o list "
+        },
+        "add": {
+            "__exec": "__jbcc_store -c note -o add -k {0} -v ~/jbcc_notes/{0}.md"
+        },
+        "remove": {
+            "__comp_0": "__jbcc_store -c note -o complement",
+            "__exec": "__jbcc_store -c note -o remove -k {0}; rm -f ~/jbcc_notes/{0}"
+        },
+        "exec": {
+            "__comp_0": "__jbcc_store -c note -o complement",
+            "__exec": "vim ~/jbcc_notes/{0}.md"
+        }
+    }
+}

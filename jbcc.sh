@@ -15,6 +15,7 @@ fi
 
 __jbcc_log_path="${__jbcc_root_dir}/jbcc.log"
 __jbcc_source_json_path="${__jbcc_root_dir}/completion.json" # json file that defines command completion information
+__jbcc_sources_directory_path="${__jbcc_root_dir}/sources"
 
 if [ ! -e ${__jbcc_source_json_path} ]; then
   echo "not found json command source at: ${__jbcc_source_json_path}"
@@ -31,9 +32,13 @@ _jbcc_make_path()
   local source_json_path=${__jbcc_source_json_path}
   for arg in "$@"
   do
-    # echo $source_json_path $static_path $params >> ${__jbcc_log_path}
+    echo $source_json_path $static_path $params >> ${__jbcc_log_path}
     if [[ -n `jq "try(${static_path}.\"${arg}\") | select(type==\"string\")" ${source_json_path}` ]]; then
       source_json_path=`jq -r "${static_path}.\"${arg}\"" ${source_json_path}`
+      echo "now source_json_path is" $source_json_path >> ${__jbcc_log_path}
+      echo "apply" $__jbcc_sources_directory_path >> ${__jbcc_log_path}
+      source_json_path=`echo $source_json_path | sed "s#__JBCC_SOURCES__#${__jbcc_sources_directory_path}#g"`
+      echo "finally source_json_path is" $source_json_path >> ${__jbcc_log_path}
       static_path=".root"
     elif [[ `jq "try(${static_path}) | has(\"${arg}\")" ${source_json_path}` == "true" ]]; then
       static_path+=.\"${arg}\" # escape to allow hyphen
@@ -68,7 +73,7 @@ jj() {
   done
 
   if [[ $command_body =~ "\{[0-9]\}" ]]; then
-    echo "Error: seems arguments are not enough" # TODO: more friendly message
+    echo "Error: arguments are not enough" # TODO: more friendly message
     return 1;
   fi
 
