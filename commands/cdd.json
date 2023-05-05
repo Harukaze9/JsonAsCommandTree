@@ -1,4 +1,5 @@
 {
     "__exec": "__jbcc_store -c goto -o exec -k {0} -e 'cd JBCC_VALUE'",
-    "__comp_0": "__jbcc_store -c goto -o complement"
+    "__comp_0": "__jbcc_store -c goto -o complement",
+    "__default": "__jbcc_store -c goto -o exec -k default -e 'cd JBCC_VALUE'"
 }

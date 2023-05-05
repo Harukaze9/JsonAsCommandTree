@@ -9,6 +9,7 @@
 # ================== config ====================== #
 __jbcc_exec_key="\"__exec\""
 __jbcc_comp_key="__comp_"
+__jbcc_default_key="\"__default\""
 # ================================================ #
 
 
@@ -69,8 +70,12 @@ cdd() {
   done
 
   if [[ $command_body =~ "\{[0-9]\}" ]]; then
-    echo "Error: arguments are not enough" # TODO: more friendly message
-    return 1;
+    local default_jq_filter=`echo ${static_path}.${__jbcc_default_key} | sed "s/\.\././g"`
+    command_body=`jq -r "try(${default_jq_filter})" ${source_json_path}`
+    if [[ $command_body =~ "null" ]]; then
+      echo "Error: arguments are not enough" # TODO: more friendly message
+      return 1;
+    fi
   fi
 
   # echo "command body is:" ${command_body}
