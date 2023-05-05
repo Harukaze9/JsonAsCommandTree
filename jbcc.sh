@@ -46,12 +46,18 @@ _make_path_%__jbcc_function_name%()
   # read source_json_path static_path params <<< $(_jbcc_make_path $(for i in "$@"; do echo -n "\"$i\" "; done))
   read source_json_path static_path params <<< $(_make_path_%__jbcc_function_name% "$@")
   if [[ -z $source_json_path ]]; then
-    echo "Error: no path is defined at [$@] in \"%__jbcc_source_json_path%\""
+    echo "JBCC Error: no path is defined at [$@] in \"%__jbcc_source_json_path%\""
     return 1;
   fi
 
   local jq_filter=`echo ${static_path}.${__jbcc_exec_key} | sed "s/\.\././g"`
   local command_body=`jq -r ${jq_filter} ${source_json_path}`
+
+  if [[ $command_body =~ "null" ]]; then
+    echo "JBCC Error: no execution command is defined at: [${static_path}]"
+    return 1
+  fi
+
   local count=0
   eval "param_array=($params)" # create array by single quoted words
   # echo "param is ${params} and param_array is: ${param_array[@]} and array size is ${#param_array[@]}"
@@ -70,7 +76,7 @@ _make_path_%__jbcc_function_name%()
 
     # show error if default command is not exist
     if [[ $command_body =~ "null" ]]; then
-      echo "Error: arguments are not enough" # TODO: more friendly message
+      echo "JBCC Error: arguments are not enough" # TODO: more friendly message
       return 1;
     fi
   fi

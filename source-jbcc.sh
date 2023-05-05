@@ -18,17 +18,20 @@ if [ ! -e ${__jbcc_source_json_path} ]; then
 fi
 # ================================================ #
 
-local sources_from_dir=`ls ${__jbcc_root_dir}/commands/*.json | tr '\n' ' '`
-local sources_from_config=`jq -r ".sources[]" ${__jbcc_root_dir}/config.json | tr '\n' ' '`
-eval "local source_json_files=(${sources_from_dir} ${sources_from_config})"
-for source_json in "${source_json_files[@]}"
-do
-  echo "source is [${source_json}]"
-  local basename=$(basename "${source_json}" .json)
-  local temp_filename="${__jbcc_root_dir}/jbcc_${basename}.sh"
-  sed "s/%__jbcc_function_name%/${basename}/g" ~/code/JsonBasedCommandCompletion/jbcc.sh | sed "s#%__jbcc_source_json_path%#${source_json}#g" > ${temp_filename}
-  source ${temp_filename}
-done
+__jbcc_source_each_json_commands() {
+  local sources_from_dir=`ls ${__jbcc_root_dir}/commands/*.json | tr '\n' ' '`
+  local sources_from_config=`jq -r ".sources[]" ${__jbcc_root_dir}/config.json | tr '\n' ' '`
+  eval "local source_json_files=(${sources_from_dir} ${sources_from_config})"
+  for source_json in "${source_json_files[@]}"
+  do
+    local basename=$(basename "${source_json}" .json)
+    local temp_filename="${__jbcc_root_dir}/jbcc_${basename}.sh"
+    sed "s/%__jbcc_function_name%/${basename}/g" ~/code/JsonBasedCommandCompletion/jbcc.sh | sed "s#%__jbcc_source_json_path%#${source_json}#g" > ${temp_filename}
+    source ${temp_filename}
+  done
+}
+
+__jbcc_source_each_json_commands
 
 # =============== option (load extensions) =======================
 # loads __jbcc_store: a simple jq wrapper command
