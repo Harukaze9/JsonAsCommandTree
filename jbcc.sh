@@ -1,17 +1,10 @@
-# # ============ Load externally defined environment variables ===== #
-# if [[ -z __jbcc_source_json_path ]]; then
-#   echo "Error: ${__jbcc_source_json_path} is not found. Please source via source-jbcc.sh"
-# fi
-# __jbcc_function_name=$(basename "${__jbcc_source_json_path}" .json)
-# echo "load function as: ${__jbcc_function_name} from: ${__jbcc_source_json_path}"
-# # ================================================ #
+# %__jbcc_function_name% and %__jbcc_function_name% will be replaced when creating temporary scripts.
 
-# ================== config ====================== #
-__jbcc_exec_key="\"__exec\""
+# ================== special json keys ====================== #
+__jbcc_exec_key="__exec"
 __jbcc_comp_key="__comp_"
-__jbcc_default_key="\"__default\""
+__jbcc_default_key="__default"
 # ================================================ #
-
 
 # ====================== jbcc core function ============================
 # util func to explore json content

@@ -1,4 +1,4 @@
-# samedayo and samedayo will be replaced when creating temporary scripts.
+# example and example will be replaced when creating temporary scripts.
 
 # ================== special json keys ====================== #
 __jbcc_exec_key="__exec"
@@ -8,11 +8,11 @@ __jbcc_default_key="__default"
 
 # ====================== jbcc core function ============================
 # util func to explore json content
-_make_path_samedayo()
+_make_path_example()
 (
   local static_path="." # current key path of source json
   local params=()
-  local source_json_path=/Users/hiyoko/code/JsonBasedCommandCompletion/samedayo.json
+  local source_json_path=/Users/hiyoko/code/JsonBasedCommandCompletion/example.json
   # echo "number of param is..." $#  >> ${__jbcc_log_path}
   # echo "content of param is..." $@  >> ${__jbcc_log_path}
   for arg in "$@"
@@ -40,13 +40,13 @@ _make_path_samedayo()
 )
 
 # main func
-samedayo() {
+example() {
   local static_path params source_json_path
   # echo "number of param is" $# 
   # read source_json_path static_path params <<< $(_jbcc_make_path $(for i in "$@"; do echo -n "\"$i\" "; done))
-  read source_json_path static_path params <<< $(_make_path_samedayo "$@")
+  read source_json_path static_path params <<< $(_make_path_example "$@")
   if [[ -z $source_json_path ]]; then
-    echo "Error: no path is defined at [$@] in \"/Users/hiyoko/code/JsonBasedCommandCompletion/samedayo.json\""
+    echo "Error: no path is defined at [$@] in \"/Users/hiyoko/code/JsonBasedCommandCompletion/example.json\""
     return 1;
   fi
 
@@ -85,12 +85,12 @@ samedayo() {
 }
 
 # completion func
-__completion_samedayo()
+__completion_example()
 {
   COMPREPLY=()
 
   local static_path params source_json_path
-  read source_json_path static_path params <<< $(_make_path_samedayo ${COMP_WORDS[@]:1:(COMP_CWORD-1)})
+  read source_json_path static_path params <<< $(_make_path_example ${COMP_WORDS[@]:1:(COMP_CWORD-1)})
   params=`echo "$params" | tr '.' ' ' | xargs`
 
   local root_jq_result=`jq -r "try (${static_path} | keys[] | @sh)" ${source_json_path}`
@@ -116,7 +116,7 @@ __completion_samedayo()
 }
 
 # bind completion function
-complete -F __completion_samedayo samedayo
-# echo "complete -F __completion_samedayo samedayo...."
+complete -F __completion_example example
+# echo "complete -F __completion_example example...."
 
 # =======================================================================
