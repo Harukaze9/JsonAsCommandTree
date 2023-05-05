@@ -14,11 +14,11 @@ __jbcc_comp_key="__comp_"
 
 # ====================== jbcc core function ============================
 # util func to explore json content
-_make_path_%__jbcc_function_name%()
+_make_path_samedayo()
 (
   local static_path="." # current key path of source json
   local params=()
-  local source_json_path=%__jbcc_source_json_path%
+  local source_json_path=/Users/hiyoko/code/JsonBasedCommandCompletion/samedayo.json
   # echo "number of param is..." $#  >> ${__jbcc_log_path}
   # echo "content of param is..." $@  >> ${__jbcc_log_path}
   for arg in "$@"
@@ -46,13 +46,13 @@ _make_path_%__jbcc_function_name%()
 )
 
 # main func
-%__jbcc_function_name%() {
+samedayo() {
   local static_path params source_json_path
   # echo "number of param is" $# 
   # read source_json_path static_path params <<< $(_jbcc_make_path $(for i in "$@"; do echo -n "\"$i\" "; done))
-  read source_json_path static_path params <<< $(_make_path_%__jbcc_function_name% "$@")
+  read source_json_path static_path params <<< $(_make_path_samedayo "$@")
   if [[ -z $source_json_path ]]; then
-    echo "Error: no path is defined at [$@] in \"%__jbcc_source_json_path%\""
+    echo "Error: no path is defined at [$@] in \"/Users/hiyoko/code/JsonBasedCommandCompletion/samedayo.json\""
     return 1;
   fi
 
@@ -82,12 +82,12 @@ _make_path_%__jbcc_function_name%()
 }
 
 # completion func
-__completion_%__jbcc_function_name%()
+__completion_samedayo()
 {
   COMPREPLY=()
 
   local static_path params source_json_path
-  read source_json_path static_path params <<< $(_make_path_%__jbcc_function_name% ${COMP_WORDS[@]:1:(COMP_CWORD-1)})
+  read source_json_path static_path params <<< $(_make_path_samedayo ${COMP_WORDS[@]:1:(COMP_CWORD-1)})
   params=`echo "$params" | tr '.' ' ' | xargs`
 
   local root_jq_result=`jq -r "try (${static_path} | keys[] | @sh)" ${source_json_path}`
@@ -112,7 +112,7 @@ __completion_%__jbcc_function_name%()
 }
 
 # bind completion function
-complete -F __completion_%__jbcc_function_name% %__jbcc_function_name%
-echo "complete -F __completion_%__jbcc_function_name% %__jbcc_function_name%...."
+complete -F __completion_samedayo samedayo
+echo "complete -F __completion_samedayo samedayo...."
 
 # =======================================================================

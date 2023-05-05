@@ -1,5 +1,10 @@
 {
-
+    "_comp_util": "__JBCC_SOURCE_DIR__/_comp_util.json",
+    "git": "__JBCC_SOURCE_DIR__/git.json",
+    "clipboard": "__JBCC_SOURCE_DIR__/clipboard.json",
+    "goto": "__JBCC_SOURCE_DIR__/goto.json",
+    "note": "__JBCC_SOURCE_DIR__/note.json",
+    "alias": {
         "__exec": "__jbcc_store -c alias -o list ",
         "list": {
             "__exec": "__jbcc_store -c alias -o list "
@@ -14,5 +19,5 @@
         "exec": {
             "__comp_0": "__jbcc_store -c alias -o complement",
             "__exec": "__jbcc_store -c alias -o exec -k {0} -e \"JBCC_VALUE\""
-        }
+        }}
 }
