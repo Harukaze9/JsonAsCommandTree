@@ -1,0 +1,6 @@
+{
+    "__exec" : "echo 'this is cdd'",
+    "help": {
+        "__exec" : "echo 'this is cdd help'"
+    }
+}
