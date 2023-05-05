@@ -1,0 +1,10 @@
+{
+    "root": {
+        "fruites": {
+            "__comp_0": "echo 'banana apple orange'",
+            "__exec": "echo {0} is yummy!"
+        },
+        "git": "__JBCC_SOURCE_DIR__/git.json",
+        "clipboard": "~/code/JsonBasedCommandCompletion/source/clipboard.json"
+    }
+}

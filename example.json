@@ -1,0 +1,19 @@
+{
+    "root": {
+        "my-favorite-commands": {
+            "fruites": {
+                "__comp_0": "echo 'banana apple orange'",
+                "__exec": "echo {0} is yummy!"
+            },
+            "see-path": {
+                "__exec": "echo ${PATH//:/$'\n'}"
+            },
+            "du-all": {
+                "__exec": "du -hs $(ls -A | grep -E \"[^.]\") | sort -hr"
+            }
+        },
+        "source-zsh": {
+            "__exec": "source ~/.zshrc"
+        }
+    }
+}

@@ -13,7 +13,7 @@
         },
         "exec": {
             "__comp_0": "__jbcc_store -c clipboard -o complement",
-            "__exec": "__jbcc_store -c clipboard -o exec -k {0} -e 'echo JBCC_VALUE' | clip.exe"
+            "__exec": "__jbcc_store -c clipboard -o exec -k {0} -e 'echo -n JBCC_VALUE' | pbcopy"
         }
     }
 }
