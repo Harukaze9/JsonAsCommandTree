@@ -1,6 +1,4 @@
 {
-    "__exec" : "echo 'this is cdd'",
-    "help": {
-        "__exec" : "echo 'this is cdd help'"
-    }
+    "__exec": "__jbcc_store -c goto -o exec -k {0} -e 'cd JBCC_VALUE'",
+    "__comp_0": "__jbcc_store -c goto -o complement"
 }

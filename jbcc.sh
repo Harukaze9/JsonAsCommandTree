@@ -56,7 +56,8 @@ _make_path_%__jbcc_function_name%()
     return 1;
   fi
 
-  local command_body=`jq -r ${static_path}.${__jbcc_exec_key} ${source_json_path}`
+  local jq_filter=`echo ${static_path}.${__jbcc_exec_key} | sed "s/\.\././g"`
+  local command_body=`jq -r ${jq_filter} ${source_json_path}`
   local count=0
   eval "param_array=($params)" # create array by single quoted words
   # echo "param is ${params} and param_array is: ${param_array[@]} and array size is ${#param_array[@]}"
@@ -97,12 +98,13 @@ __completion_%__jbcc_function_name%()
   if [[ -n "${trimed_jq_result// }" ]]; then
     completion_list=${trimed_jq_result}
   elif [[ ${root_jq_result[@]} =~ "__exec" ]]; then
-    # echo "params  is" ${params} >> ${__jbcc_log_path}
+    echo "params  is" ${params} >> ${__jbcc_log_path}
     local param_num=`echo ${params} | wc -w | sed 's/ //g'`
     local comp_command="${__jbcc_comp_key}${param_num}"
-    exec_command=`jq -r "try (${static_path}.${comp_command})" ${source_json_path}`
-    # echo "query: " "jq -r \"try (${static_path}.${comp_command})\" ${source_json_path}" >> ${__jbcc_log_path}
-    # echo "exec_command: " ${exec_command} >> ${__jbcc_log_path}
+    local jq_filter=`echo ${static_path}.${comp_command} | sed "s/\.\././g"` # remvoe duplicated .
+    exec_command=`jq -r "try (${jq_filter})" ${source_json_path}`
+    echo "query: " "jq -r \"try (${jq_filter})\" ${source_json_path}" >> ${__jbcc_log_path}
+    echo "exec_command: " ${exec_command} >> ${__jbcc_log_path}
     if [[ ${exec_command} != "null" ]]; then
       completion_list=`eval ${exec_command}`
     fi
@@ -113,6 +115,6 @@ __completion_%__jbcc_function_name%()
 
 # bind completion function
 complete -F __completion_%__jbcc_function_name% %__jbcc_function_name%
-echo "complete -F __completion_%__jbcc_function_name% %__jbcc_function_name%...."
+# echo "complete -F __completion_%__jbcc_function_name% %__jbcc_function_name%...."
 
 # =======================================================================
