@@ -12,6 +12,6 @@
     },
     "exec": {
         "__comp_0": "__jbcc_store -c goto -o complement",
-        "__exec": "__jbcc_store -c goto -o exec -k {0} -e 'cd JBCC_VALUE'"
+        "__exec": "cd $(__jbcc_store -c goto -o get -k {0})"
     }
 }

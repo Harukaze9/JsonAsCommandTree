@@ -12,6 +12,6 @@
     },
     "exec": {
         "__comp_0": "__jbcc_store -c clipboard -o complement",
-        "__exec": "__jbcc_store -c clipboard -o exec -k {0} -e 'echo -n JBCC_VALUE' | pbcopy"
+        "__exec": "echo -n `__jbcc_store -c clipboard -o get -k {0}` | pbcopy"
     }
 }

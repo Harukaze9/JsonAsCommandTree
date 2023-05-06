@@ -6,14 +6,17 @@
     "help": {
         "__exec": "echo 'write help here'"
     },
-    "_list": {
-        "__exec": "find ${__jbcc_generated_dir} -type f -name \"*.sh\" | sed -e 's/.*jbcc_\\(.*\\)\\.sh$/\\1/'"
+    "_list_config_commands": {
+        "__exec": "jq -r '.commands[]' ${__jbcc_config_path} | sed -E 's|.*\/([^\/]+)\\.json$|\\1\t(&)|'"
+    },
+    "_list_dir_commands": {
+        "__exec": "find ${__jbcc_commands_dir} -type f -name '*.json' | sed -E 's|.*\/([^\/]+)\\.json$|\\1\t(&)|'"
     },
     "list": {
-        "__exec": "echo \"==== [jbcc loaded commands] ========\n`jbcc _list`\n==========\""
+        "__exec": "echo \"====================\n[commands loaded by config]\n`jbcc _list_config_commands`\n[commands loaded by directory]\n`jbcc _list_dir_commands`\n=================\""
     },
     "install": {
-        "__exec": "jq '.sources |= .+ [\"`readlink -f {0}`\"]' ${__jbcc_config_path} > tmp && mv tmp ${__jbcc_config_path}; jbcc refresh",
+        "__exec": "jq '.commands |= .+ [\"`readlink -f {0}`\"]' ${__jbcc_config_path} > tmp && mv tmp ${__jbcc_config_path}; jbcc refresh",
         "__comp_0": "ls *.json"
     },
     "uninstall": {

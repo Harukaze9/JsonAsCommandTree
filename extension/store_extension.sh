@@ -30,9 +30,6 @@ __jbcc_store()
         d)
         local arg_description="$OPTARG"
         ;;
-        e)
-        local arg_execution="$OPTARG"
-        ;;
         *)
         echo "Usage: $0 [-c arg_a] [-b arg_b] [-f]"
         return 1
@@ -81,10 +78,8 @@ __jbcc_store()
         complement)
         echo `jq -r ".${arg_category} | keys[] " ${__jbcc_store_path} | xargs echo`
         ;;
-        exec)
-        local value=`jq -r ".${arg_category}.\"${arg_key}\"" ${__jbcc_store_path}`
-        exec_command=`echo ${arg_execution} | sed "s#JBCC_VALUE#${value}#g"` # use '#' as a sed seperator.
-        eval "$exec_command"
+        get)
+        echo `jq -r ".${arg_category}.\"${arg_key}\"" ${__jbcc_store_path}`
         ;;
         *)
         echo "Usage: $0 [-c arg_a] [-b arg_b] [-f]"

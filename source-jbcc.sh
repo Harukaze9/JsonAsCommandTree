@@ -19,12 +19,13 @@ __jbcc_log_path="${__jbcc_root_dir}/jbcc.log"
 __jbcc_config_path="${__jbcc_root_dir}/config.json"
 __jbcc_sources_dir="${__jbcc_root_dir}/source"
 __jbcc_generated_dir="${__jbcc_root_dir}/generated"
+__jbcc_commands_dir="${__jbcc_root_dir}/commands"
 
 # ================================================ #
 
 __jbcc_source_each_json_commands() {
   local sources_from_dir=`ls ${__jbcc_root_dir}/commands/*.json | tr '\n' ' '`
-  local sources_from_config=`jq -r ".sources[]" ${__jbcc_config_path} | tr '\n' ' '`
+  local sources_from_config=`jq -r ".commands[]" ${__jbcc_config_path} | tr '\n' ' '`
   eval "local source_json_files=(${sources_from_dir} ${sources_from_config})"
   find ${__jbcc_generated_dir} -name "*.sh" -type f -delete
   for source_json in "${source_json_files[@]}"
