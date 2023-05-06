@@ -12,7 +12,7 @@ _make_path_cdd()
 (
   local static_path="." # current key path of source json
   local params=()
-  local source_json_path=/Users/hiyoko/code/JsonBasedCommandCompletion/commands/cdd.json
+  local source_json_path=./commands/cdd.json
   # echo "number of param is..." $#  >> ${__jbcc_log_path}
   # echo "content of param is..." $@  >> ${__jbcc_log_path}
   for arg in "$@"
@@ -46,7 +46,7 @@ cdd() {
   # read source_json_path static_path params <<< $(_jbcc_make_path $(for i in "$@"; do echo -n "\"$i\" "; done))
   read source_json_path static_path params <<< $(_make_path_cdd "$@")
   if [[ -z $source_json_path ]]; then
-    echo "JBCC Error: no path is defined at [$@] in \"/Users/hiyoko/code/JsonBasedCommandCompletion/commands/cdd.json\""
+    echo "JBCC Error: no path is defined at [$@] in \"./commands/cdd.json\""
     return 1;
   fi
 

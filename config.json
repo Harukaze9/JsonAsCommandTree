@@ -1,6 +1,6 @@
 {
-    "sources": [
-        "/Users/hiyoko/code/JsonBasedCommandCompletion/example.json",
-        "/Users/hiyoko/code/JsonBasedCommandCompletion/samedayo.json"
-    ]
+  "sources": [
+    "/Users/hiyoko/code/JsonBasedCommandCompletion/example.json",
+    "/Users/hiyoko/code/JsonBasedCommandCompletion/samedayo.json"
+  ]
 }

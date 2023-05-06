@@ -1,0 +1,22 @@
+{
+    "__exec": "jbcc help",
+    "refresh": {
+        "__exec": "source ${__jbcc_root_dir}/source-jbcc.sh; echo 'refresh completed!'"
+    },
+    "help": {
+        "__exec": "echo 'write help here'"
+    },
+    "_list": {
+        "__exec": "find ${__jbcc_generated_dir} -type f -name \"*.sh\" | sed -e 's/.*jbcc_\\(.*\\)\\.sh$/\\1/'"
+    },
+    "list": {
+        "__exec": "echo \"==== [jbcc loaded commands] ========\n`jbcc _list`\n==========\""
+    },
+    "install": {
+        "__exec": "jq '.sources |= .+ [\"`readlink -f {0}`\"]' ${__jbcc_config_path} > tmp && mv tmp ${__jbcc_config_path}; jbcc refresh",
+        "__comp_0": "ls *.json"
+    },
+    "uninstall": {
+        "__exec": "jq . ${__jbcc_config_path}"
+    }
+}
