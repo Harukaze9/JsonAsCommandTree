@@ -31,7 +31,7 @@ __jbcc_source_each_json_commands() {
   do
     local basename=$(basename "${source_json}" .json)
     local temp_filename="${__jbcc_generated_dir}/jbcc_${basename}.sh"
-    sed "s/%__jbcc_function_name%/${basename}/g" ~/code/JsonBasedCommandCompletion/jbcc.sh | sed "s#%__jbcc_source_json_path%#${source_json}#g" > ${temp_filename}
+    sed -e "s/%__jbcc_function_name%/${basename}/g" -e "s#%__jbcc_source_json_path%#${source_json}#g" ~/code/JsonBasedCommandCompletion/jbcc.sh  > ${temp_filename}
     source ${temp_filename}
   done
 }
