@@ -4,8 +4,8 @@
         "__exec": "__jbcc_store -c note -o list "
     },
     "bookmark": {
-        "__1": "bash -c ls",
-        "__exec": "__jbcc_store -c note -o add -k {0} -v `readlink -f {1}`"
+        "__0": "find . -type f -maxdepth 1 -exec basename {} \\;",
+        "__exec": "__jbcc_store -c note -o add -k {1} -v `readlink -f {0}`"
     },
     "create": {
         "__exec": "__jbcc_store -c note -o add -k {0} -v ~/jbcc_notes/{0}"

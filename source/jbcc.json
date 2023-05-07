@@ -1,13 +1,13 @@
 {
     "__exec": "jbcc help",
+    "help": {
+        "__exec": "echo 'jbcc list: Show list of installed commands and scripts by JBCC\njbcc install: Intall specified file (.json or .sh)\njbcc uninstall: Uninstall specified file (.json or .sh)'"
+    },
     "_refresh": {
         "__exec": "source ${__jbcc_root_dir}/source-jbcc.sh"
     },
     "refresh": {
         "__exec": "jbcc _refresh; echo 'refresh completed!'"
-    },
-    "help": {
-        "__exec": "echo 'write help here'"
     },
     "_list_commands": {
         "__exec": "find ${__jbcc_source_dir} \\( -type f -o -type l \\)   -maxdepth 1 -name '*.json' | sed -E 's|.*\/([^\/]+)\\.json$|\\1\t(&)|'"
