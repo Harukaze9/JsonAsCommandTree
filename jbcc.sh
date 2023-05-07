@@ -15,9 +15,28 @@ _make_path_%__jbcc_function_name%()
     local cand_static_path=`echo ${static_path}.\"${arg}\"  | sed "s/\.\././g"`
     if [[ -n `jq "try(${cand_static_path}) | select(type==\"string\")" ${source_json_path}` ]]; then
       source_json_path=`jq -r ${cand_static_path} ${source_json_path}`
-      # echo "now source_json_path is" $source_json_path >> ${__jbcc_log_path}
-      # echo "apply" $__jbcc_sources_directory_path >> ${__jbcc_log_path}
-      source_json_path=`echo $source_json_path | sed -e "s#__JBCC_SOURCE_DIR__#${__jbcc_source_dir}#g" -e "s|^~/|$HOME/|g"`
+      
+      if [[ "${source_json_path:0:1}" != "/"  && "${source_json_path:0:1}" != "~" ]]; then
+        local rpath="."
+        if [ -L "%__jbcc_source_json_path%" ]; then
+          echo "シンボリックリンクのようですね。: linkpath is ${linkpath}" >> ${__jbcc_log_path}
+          rpath=`dirname $(readlink %__jbcc_source_json_path%)`
+        else
+          rpath=`dirname %__jbcc_source_json_path%`
+        fi
+        # echo "相対パスのようですね。source path is: %__jbcc_source_json_path%" >> ${__jbcc_log_path}
+        # local linkpath=`readlink %__jbcc_source_json_path%`
+        # echo "相対パスのようですね。: linkpath is ${linkpath}" >> ${__jbcc_log_path}
+        # local rpath=`dirname $(readlink %__jbcc_source_json_path%)`
+        echo "相対パスのようですね。: rpath is ${rpath}" >> ${__jbcc_log_path}
+        source_json_path="${rpath}/$source_json_path"
+        echo "相対パスのようですね。: sourcejsonpath is ${source_json_path}" >> ${__jbcc_log_path}
+      else
+        echo "相対パスではないですね。" >> ${__jbcc_log_path}
+      fi
+
+      echo "hello" >> ${__jbcc_log_path}
+      source_json_path=`echo $source_json_path | sed "s|^~/|$HOME/|g"`
       # echo "finally source_json_path is" $source_json_path >> ${__jbcc_log_path}
       static_path="."
     elif [[ `jq "try(${static_path}) | has(\"${arg}\")" ${source_json_path}` == "true" ]]; then
@@ -29,6 +48,7 @@ _make_path_%__jbcc_function_name%()
       return 1;
     fi
   done
+  # echo "path is: %__jbcc_source_json_path%" >> ${__jbcc_log_path}
 
   echo $source_json_path $static_path $params 
 )
@@ -55,12 +75,20 @@ _make_path_%__jbcc_function_name%()
   local count=0
   eval "param_array=($params)" # create array by single quoted words
   # echo "param is ${params} and param_array is: ${param_array[@]} and array size is ${#param_array[@]}"
+
+  # replace {N} tag
   for element in "${param_array[@]}"; do
     arg=`echo $element | sed "s/'//g"`
     # echo "try to set: [${arg}] to [${command_body}]"
     command_body=`echo $command_body | sed "s#{${count}}#${arg}#g"` # use '#' as a sed seperator.
     ((count++))
   done
+
+  # replace {SELF} tag
+  if [[ $command_body =~ "\{SELF\}" ]]; then
+    local command_basename=`basename %__jbcc_source_json_path% .json`
+    command_body=`echo $command_body | sed "s#{SELF}#${command_basename}#g"` # use '#' as a sed seperator.
+  fi
 
   # if arguments are not enough
   if [[ $command_body =~ "\{[0-9]\}" ]]; then

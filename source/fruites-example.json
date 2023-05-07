@@ -1,5 +1,1 @@
-{
-    "__exec": "echo I {0} {1}!",
-    "__comp_0": "echo 'hate like'",
-    "__comp_1": "echo 'banana apple orange'"
-}
+/Users/hiyoko/code/JsonBasedCommandCompletion/gallary/fruites-example.json
