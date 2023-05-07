@@ -1,5 +1,5 @@
 {
     "__exec": "cd $(__jbcc_store -c goto -o get -k {0})",
-    "__comp_0": "__jbcc_store -c goto -o complement",
+    "__0": "__jbcc_store -c goto -o complement",
     "__default": "cd $(__jbcc_store -c goto -o get -k default)"
 }

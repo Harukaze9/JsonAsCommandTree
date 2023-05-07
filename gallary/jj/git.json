@@ -6,7 +6,7 @@
         "__exec": "git branch -D $(jj _comp_util git-heads | grep {0})"
     },
     "comb": {
-        "__comp_0": "jj _comp_util git-remotes",
+        "__0": "jj _comp_util git-remotes",
         "__exec": "git checkout -fB my-{0} origin/{0}"
     }
 }

@@ -1,6 +1,6 @@
 # ================== special json keys ====================== #
 __jbcc_exec_key="__exec"
-__jbcc_comp_key="__comp_"
+__jbcc_comp_key="__"
 __jbcc_default_key="__default"
 # ================================================ #
 

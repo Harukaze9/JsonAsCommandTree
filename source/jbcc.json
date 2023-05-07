@@ -20,10 +20,10 @@
     },
     "install": {
         "__exec": "ln -s $(realpath {0}) ${__jbcc_source_dir} && echo '[{0}] is installed!\n' && jbcc _refresh && jbcc list",
-        "__comp_0": "find . \\( -type f -o -type l \\)  -maxdepth 1 \\( -name '*.json' -or -name '*.sh' \\) -exec basename {} \\;"
+        "__0": "find . \\( -type f -o -type l \\)  -maxdepth 1 \\( -name '*.json' -or -name '*.sh' \\) -exec basename {} \\;"
     },
     "uninstall": {
         "__exec": "rm ${__jbcc_source_dir}/{0} && echo '[{0}] is uninstalled!\n' && jbcc _refresh && jbcc list",
-        "__comp_0": "find ${__jbcc_source_dir}  \\( -type f -o -type l \\) -maxdepth 1 \\( -name '*.json' -or -name '*.sh' \\) -exec basename {} \\;"
+        "__0": "find ${__jbcc_source_dir}  \\( -type f -o -type l \\) -maxdepth 1 \\( -name '*.json' -or -name '*.sh' \\) -exec basename {} \\;"
     }
 }

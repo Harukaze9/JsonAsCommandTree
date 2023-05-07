@@ -7,11 +7,11 @@
         "__exec": "__jbcc_store -c alias -o add -k {0} -v \"{1}\""
     },
     "remove": {
-        "__comp_0": "__jbcc_store -c alias -o complement",
+        "__0": "__jbcc_store -c alias -o complement",
         "__exec": "__jbcc_store -c alias -o remove -k {0}"
     },
     "exec": {
-        "__comp_0": "__jbcc_store -c alias -o complement",
+        "__0": "__jbcc_store -c alias -o complement",
         "__exec": "`__jbcc_store -c alias -o get -k {0}`"
     }
 }

@@ -2,7 +2,7 @@
     "root": {
         "my-favorite-commands": {
             "fruites": {
-                "__comp_0": "echo 'banana apple orange'",
+                "__0": "echo 'banana apple orange'",
                 "__exec": "echo {0} is yummy!"
             },
             "see-path": {
