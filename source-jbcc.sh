@@ -17,9 +17,8 @@ fi
 
 __jbcc_log_path="${__jbcc_root_dir}/jbcc.log"
 __jbcc_config_path="${__jbcc_root_dir}/config.json"
-__jbcc_sources_dir="${__jbcc_root_dir}/source"
 __jbcc_generated_dir="${__jbcc_root_dir}/generated"
-__jbcc_commands_dir="${__jbcc_root_dir}/commands"
+__jbcc_source_dir="${__jbcc_root_dir}/source"
 
 # ================================================ #
 
@@ -27,7 +26,7 @@ __jbcc_commands_dir="${__jbcc_root_dir}/commands"
 # ============  load commands from json ========================== #
 __jbcc_source_each_json_commands() {
   find ${__jbcc_generated_dir} -name "*.sh" -type f -delete
-  for source_json in `ls ${__jbcc_root_dir}/commands/*.json`
+  for source_json in `ls ${__jbcc_source_dir}/*.json`
   do
     local basename=$(basename "${source_json}" .json)
     local temp_filename="${__jbcc_generated_dir}/jbcc_${basename}.sh"
@@ -39,7 +38,7 @@ __jbcc_source_each_json_commands() {
 __jbcc_source_each_json_commands
 
 # =============== source scripts =======================
-for source_script in `find "${__jbcc_root_dir}/commands/" -name "*.sh" -type f`
+for source_script in `find "${__jbcc_source_dir}/" -name "*.sh" -type f`
 do
 source "${source_script}"
 done

@@ -1,9 +1,9 @@
 {
-    "_comp_util": "__JBCC_SOURCE_DIR__/_comp_util.json",
-    "git": "__JBCC_SOURCE_DIR__/git.json",
-    "clipboard": "__JBCC_SOURCE_DIR__/clipboard.json",
-    "goto": "__JBCC_SOURCE_DIR__/goto.json",
-    "note": "__JBCC_SOURCE_DIR__/note.json",
+    "_comp_util": "__JBCC_SOURCE_DIR__/jj/_comp_util.json",
+    "git": "__JBCC_SOURCE_DIR__/jj/git.json",
+    "clipboard": "__JBCC_SOURCE_DIR__/jj/clipboard.json",
+    "goto": "__JBCC_SOURCE_DIR__/jj/goto.json",
+    "note": "__JBCC_SOURCE_DIR__/jj/note.json",
     "alias": {
         "__exec": "__jbcc_store -c alias -o list ",
         "list": {

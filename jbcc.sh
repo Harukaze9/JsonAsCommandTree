@@ -17,7 +17,7 @@ _make_path_%__jbcc_function_name%()
       source_json_path=`jq -r ${cand_static_path} ${source_json_path}`
       # echo "now source_json_path is" $source_json_path >> ${__jbcc_log_path}
       # echo "apply" $__jbcc_sources_directory_path >> ${__jbcc_log_path}
-      source_json_path=`echo $source_json_path | sed -e "s#__JBCC_SOURCE_DIR__#${__jbcc_sources_dir}#g" -e "s|^~/|$HOME/|g"`
+      source_json_path=`echo $source_json_path | sed -e "s#__JBCC_SOURCE_DIR__#${__jbcc_source_dir}#g" -e "s|^~/|$HOME/|g"`
       # echo "finally source_json_path is" $source_json_path >> ${__jbcc_log_path}
       static_path="."
     elif [[ `jq "try(${static_path}) | has(\"${arg}\")" ${source_json_path}` == "true" ]]; then

@@ -1,0 +1,18 @@
+{   
+    "__exec": "_jbcc-store show clipboard",
+    "list": {
+        "__exec": "_jbcc-store show clipboard"
+    },
+    "add": {
+        "__exec": "_jbcc-store add clipboard {0} \"{1}\""
+    },
+    "remove": {
+        "__exec": "_jbcc-store remove clipboard {0}",
+        "__comp_0": "__jbcc_store -c clipboard -o complement"
+
+    },
+    "exec": {
+        "__exec": "echo -n `_jbcc-store get clipboard {0}` | pbcopy",
+        "__comp_0": "__jbcc_store -c clipboard -o complement"
+    }
+}
