@@ -2,5 +2,5 @@ jact.log
 command.json
 gallary/store.json
 generated
-source
-!source/jact.json
+/source/
+!/source/jact.json
