@@ -10,20 +10,20 @@
         "__exec": "echo 'write help here'"
     },
     "_list_commands": {
-        "__exec": "find ${__jbcc_commands_dir} -type f -name '*.json' | sed -E 's|.*\/([^\/]+)\\.json$|\\1\t(&)|'"
+        "__exec": "find ${__jbcc_source_dir} \\( -type f -o -type l \\)   -maxdepth 1 -name '*.json' | sed -E 's|.*\/([^\/]+)\\.json$|\\1\t(&)|'"
     },
     "_list_scripts": {
-        "__exec": "find ${__jbcc_commands_dir} -type f -name '*.sh' | sed -E 's|.*\/([^\/]+)\\.sh$|\\1.sh\t(&)|'"
+        "__exec": "find ${__jbcc_source_dir} \\( -type f -o -type l \\)   -maxdepth 1 -name '*.sh' | sed -E 's|.*\/([^\/]+)\\.sh$|\\1.sh\t(&)|'"
     },
     "list": {
         "__exec": "echo \"[JBCC installed list]\n====== [commands] ========\n`jbcc _list_commands`\n======= [scripts] ======\n`jbcc _list_scripts` \n=======\""
     },
     "install": {
-        "__exec": "cp {0} ${__jbcc_commands_dir} && echo '[{0}] is installed!\n' && jbcc _refresh && jbcc list",
-        "__comp_0": "find . -type f -maxdepth 1 \\( -name '*.json' -or -name '*.sh' \\) -exec basename {} \\;"
+        "__exec": "ln -s $(realpath {0}) ${__jbcc_source_dir} && echo '[{0}] is installed!\n' && jbcc _refresh && jbcc list",
+        "__comp_0": "find . \\( -type f -o -type l \\)  -maxdepth 1 \\( -name '*.json' -or -name '*.sh' \\) -exec basename {} \\;"
     },
     "uninstall": {
-        "__exec": "rm ${__jbcc_commands_dir}/{0} && echo '[{0}] is uninstalled!\n' && jbcc _refresh && jbcc list",
-        "__comp_0": "find ${__jbcc_commands_dir} -type f -maxdepth 1 \\( -name '*.json' -or -name '*.sh' \\) -exec basename {} \\;"
+        "__exec": "rm ${__jbcc_source_dir}/{0} && echo '[{0}] is uninstalled!\n' && jbcc _refresh && jbcc list",
+        "__comp_0": "find ${__jbcc_source_dir}  \\( -type f -o -type l \\) -maxdepth 1 \\( -name '*.json' -or -name '*.sh' \\) -exec basename {} \\;"
     }
 }
