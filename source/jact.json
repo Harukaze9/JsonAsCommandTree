@@ -25,5 +25,9 @@
     "uninstall": {
         "__exec": "rm ${__jact_source_dir}/{0} && echo '[{0}] is uninstalled!\n' && jact _refresh && jact list",
         "__0": "find ${__jact_source_dir}  \\( -type f -o -type l \\) -maxdepth 1 \\( -name '*.json' -or -name '*.sh' \\) -exec basename {} \\;"
+    },
+    "edit": {
+        "__exec": "vim $(realpath ${__jact_source_dir}/{0})",
+        "__0": "find ${__jact_source_dir}  \\( -type f -o -type l \\) -maxdepth 1 \\( -name '*.json' -or -name '*.sh' \\) -exec basename {} \\;"
     }
 }
