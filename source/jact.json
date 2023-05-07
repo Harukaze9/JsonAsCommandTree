@@ -1,0 +1,29 @@
+{
+    "__exec": "jact help",
+    "help": {
+        "__exec": "echo 'jact list: Show list of installed commands and scripts by JACT\njact install: Intall specified file (.json or .sh)\njact uninstall: Uninstall specified file (.json or .sh)'"
+    },
+    "_refresh": {
+        "__exec": "source ${__jact_root_dir}/source-jact.sh"
+    },
+    "refresh": {
+        "__exec": "jact _refresh; echo 'refresh completed!'"
+    },
+    "_list_commands": {
+        "__exec": "find ${__jact_source_dir} \\( -type f -o -type l \\)   -maxdepth 1 -name '*.json' | sed -E 's|.*\/([^\/]+)\\.json$|\\1\t(&)|'"
+    },
+    "_list_scripts": {
+        "__exec": "find ${__jact_source_dir} \\( -type f -o -type l \\)   -maxdepth 1 -name '*.sh' | sed -E 's|.*\/([^\/]+)\\.sh$|\\1.sh\t(&)|'"
+    },
+    "list": {
+        "__exec": "echo \"[JACT installed list]\n====== [commands] ========\n`jact _list_commands`\n======= [scripts] ======\n`jact _list_scripts` \n===============\""
+    },
+    "install": {
+        "__exec": "ln -s $(realpath {0}) ${__jact_source_dir} && echo '[{0}] is installed!\n' && jact _refresh && jact list",
+        "__0": "find . \\( -type f -o -type l \\)  -maxdepth 1 \\( -name '*.json' -or -name '*.sh' \\) -exec basename {} \\;"
+    },
+    "uninstall": {
+        "__exec": "rm ${__jact_source_dir}/{0} && echo '[{0}] is uninstalled!\n' && jact _refresh && jact list",
+        "__0": "find ${__jact_source_dir}  \\( -type f -o -type l \\) -maxdepth 1 \\( -name '*.json' -or -name '*.sh' \\) -exec basename {} \\;"
+    }
+}

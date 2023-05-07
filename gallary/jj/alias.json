@@ -1,17 +1,17 @@
 {
-    "__exec": "__jbcc_store -c alias -o list ",
+    "__exec": "__jact_store -c alias -o list ",
     "list": {
-        "__exec": "__jbcc_store -c alias -o list "
+        "__exec": "__jact_store -c alias -o list "
     },
     "add": {
-        "__exec": "__jbcc_store -c alias -o add -k {0} -v \"{1}\""
+        "__exec": "__jact_store -c alias -o add -k {0} -v \"{1}\""
     },
     "remove": {
-        "__0": "__jbcc_store -c alias -o complement",
-        "__exec": "__jbcc_store -c alias -o remove -k {0}"
+        "__0": "__jact_store -c alias -o complement",
+        "__exec": "__jact_store -c alias -o remove -k {0}"
     },
     "exec": {
-        "__0": "__jbcc_store -c alias -o complement",
-        "__exec": "`__jbcc_store -c alias -o get -k {0}`"
+        "__0": "__jact_store -c alias -o complement",
+        "__exec": "`__jact_store -c alias -o get -k {0}`"
     }
 }

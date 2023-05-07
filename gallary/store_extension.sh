@@ -1,16 +1,16 @@
-__jbcc_store_path="${__jbcc_root_dir}/gallary/store.json" #
+__jact_store_path="${__jact_root_dir}/gallary/store.json" #
 
-__jbcc_store_show()
+__jact_store_show()
 {
     local description=$1
     local category=$2
 
     echo "=====[ $description ]====="
-    jq -r ".${category} | to_entries[] | \"\(.key): \(.value)\"" ${__jbcc_store_path}
+    jq -r ".${category} | to_entries[] | \"\(.key): \(.value)\"" ${__jact_store_path}
     echo "=========================="
 }
 
-__jbcc_store()
+__jact_store()
 {
     local OPTIND
     while getopts "c:k:v:o:d:e:" option; do
@@ -53,33 +53,33 @@ __jbcc_store()
 
     case $arg_operation in
         add)
-        local result=`jq ".${arg_category}.\"${arg_key}\" = \"${arg_value}\"" $__jbcc_store_path`
+        local result=`jq ".${arg_category}.\"${arg_key}\" = \"${arg_value}\"" $__jact_store_path`
         if [[ -n ${result} ]]; then
-            echo -E $result > $__jbcc_store_path
+            echo -E $result > $__jact_store_path
             echo "successfully added: \"${arg_key}\" (${arg_value})"
-            __jbcc_store_show $arg_description $arg_category
+            __jact_store_show $arg_description $arg_category
         else
             echo "jq error occured";
         fi
         ;;
         remove)
-        local result=`jq "del(.${arg_category}.\"${arg_key}\")" $__jbcc_store_path`
+        local result=`jq "del(.${arg_category}.\"${arg_key}\")" $__jact_store_path`
         if [[ -n ${result} ]]; then
-            echo -E $result > $__jbcc_store_path
+            echo -E $result > $__jact_store_path
             echo "successfully removed: \"${arg_key}\""
-            __jbcc_store_show $arg_description $arg_category
+            __jact_store_show $arg_description $arg_category
         else
             echo "jq error occured";
         fi
         ;;
         list)
-        __jbcc_store_show $arg_description $arg_category
+        __jact_store_show $arg_description $arg_category
         ;;
         complement)
-        echo `jq -r ".${arg_category} | keys[] " ${__jbcc_store_path} | xargs echo`
+        echo `jq -r ".${arg_category} | keys[] " ${__jact_store_path} | xargs echo`
         ;;
         get)
-        echo `jq -r ".${arg_category}.\"${arg_key}\"" ${__jbcc_store_path}`
+        echo `jq -r ".${arg_category}.\"${arg_key}\"" ${__jact_store_path}`
         ;;
         *)
         echo "Usage: $0 [-c arg_a] [-b arg_b] [-f]"

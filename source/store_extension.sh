@@ -1,1 +1,1 @@
-/Users/hiyoko/code/JsonBasedCommandCompletion/gallary/store_extension.sh
+/Users/hiyoko/code/JsonAsCommandTree/gallary/store_extension.sh

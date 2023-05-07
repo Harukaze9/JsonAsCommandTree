@@ -16,71 +16,71 @@
             }
         },
         "alias": {
-            "__exec": "__jbcc_store -c alias -o list ",
+            "__exec": "__jact_store -c alias -o list ",
             "list": {
-                "__exec": "__jbcc_store -c alias -o list "
+                "__exec": "__jact_store -c alias -o list "
             },
             "add": {
-                "__exec": "__jbcc_store -c alias -o add -k {0} -v \\\"{1}\\\""
+                "__exec": "__jact_store -c alias -o add -k {0} -v \\\"{1}\\\""
             },
             "remove": {
-                "__0": "__jbcc_store -c alias -o complement",
-                "__exec": "__jbcc_store -c alias -o remove -k {0}"
+                "__0": "__jact_store -c alias -o complement",
+                "__exec": "__jact_store -c alias -o remove -k {0}"
             },
             "exec": {
-                "__0": "__jbcc_store -c alias -o complement",
-                "__exec": "__jbcc_store -c alias -o exec -k {0} -e \"JBCC_VALUE\""
+                "__0": "__jact_store -c alias -o complement",
+                "__exec": "__jact_store -c alias -o exec -k {0} -e \"JACT_VALUE\""
             }
         },
         "clipboard": {
-            "__exec": "__jbcc_store -c clipboard -o list ",
+            "__exec": "__jact_store -c clipboard -o list ",
             "list": {
-                "__exec": "__jbcc_store -c clipboard -o list "
+                "__exec": "__jact_store -c clipboard -o list "
             },
             "add": {
-                "__exec": "__jbcc_store -c clipboard -o add -k {0} -v \\\"{1}\\\""
+                "__exec": "__jact_store -c clipboard -o add -k {0} -v \\\"{1}\\\""
             },
             "remove": {
-                "__0": "__jbcc_store -c clipboard -o complement",
-                "__exec": "__jbcc_store -c clipboard -o remove -k {0}"
+                "__0": "__jact_store -c clipboard -o complement",
+                "__exec": "__jact_store -c clipboard -o remove -k {0}"
             },
             "exec": {
-                "__0": "__jbcc_store -c clipboard -o complement",
-                "__exec": "__jbcc_store -c clipboard -o exec -k {0} -e 'echo JBCC_VALUE' | clip.exe"
+                "__0": "__jact_store -c clipboard -o complement",
+                "__exec": "__jact_store -c clipboard -o exec -k {0} -e 'echo JACT_VALUE' | clip.exe"
             }
         },
         "goto": {
-            "__exec": "__jbcc_store -c goto -o list ",
+            "__exec": "__jact_store -c goto -o list ",
             "list": {
-                "__exec": "__jbcc_store -c goto -o list "
+                "__exec": "__jact_store -c goto -o list "
             },
             "add": {
-                "__exec": "__jbcc_store -c goto -o add -k {0} -v $(pwd)"
+                "__exec": "__jact_store -c goto -o add -k {0} -v $(pwd)"
             },
             "remove": {
-                "__0": "__jbcc_store -c goto -o complement",
-                "__exec": "__jbcc_store -c goto -o remove -k {0}"
+                "__0": "__jact_store -c goto -o complement",
+                "__exec": "__jact_store -c goto -o remove -k {0}"
             },
             "exec": {
-                "__0": "__jbcc_store -c goto -o complement",
-                "__exec": "__jbcc_store -c goto -o exec -k {0} -e 'cd JBCC_VALUE'"
+                "__0": "__jact_store -c goto -o complement",
+                "__exec": "__jact_store -c goto -o exec -k {0} -e 'cd JACT_VALUE'"
             }
         },
         "note": {
-            "__exec": "__jbcc_store -c note -o list ",
+            "__exec": "__jact_store -c note -o list ",
             "list": {
-                "__exec": "__jbcc_store -c note -o list "
+                "__exec": "__jact_store -c note -o list "
             },
             "add": {
-                "__exec": "__jbcc_store -c note -o add -k {0} -v ~/jbcc_notes/{0}.md"
+                "__exec": "__jact_store -c note -o add -k {0} -v ~/jact_notes/{0}.md"
             },
             "remove": {
-                "__0": "__jbcc_store -c note -o complement",
-                "__exec": "__jbcc_store -c note -o remove -k {0}; rm -f ~/jbcc_notes/{0}"
+                "__0": "__jact_store -c note -o complement",
+                "__exec": "__jact_store -c note -o remove -k {0}; rm -f ~/jact_notes/{0}"
             },
             "exec": {
-                "__0": "__jbcc_store -c note -o complement",
-                "__exec": "vim ~/jbcc_notes/{0}.md"
+                "__0": "__jact_store -c note -o complement",
+                "__exec": "vim ~/jact_notes/{0}.md"
             }
         }
     }

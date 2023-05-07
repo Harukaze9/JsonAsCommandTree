@@ -1,11 +1,11 @@
-# %__jbcc_function_name% and %__jbcc_source_json_path% will be replaced when generating temporary scripts.
+# %__jact_function_name% and %__jact_source_json_path% will be replaced when generating temporary scripts.
 
 # util func to explore json content
-_make_path_%__jbcc_function_name%()
+_make_path_%__jact_function_name%()
 (
   local static_path="." # current key path of source json
   local params=()
-  local source_json_path=%__jbcc_source_json_path%
+  local source_json_path=%__jact_source_json_path%
   for arg in "$@"
   do
     local cand_static_path=`echo ${static_path}.\"${arg}\"  | sed "s/\.\././g"`
@@ -14,10 +14,10 @@ _make_path_%__jbcc_function_name%()
       
       if [[ "${source_json_path:0:1}" != "/"  && "${source_json_path:0:1}" != "~" ]]; then
         local rpath="."
-        if [ -L "%__jbcc_source_json_path%" ]; then
-          rpath=`dirname $(readlink %__jbcc_source_json_path%)`
+        if [ -L "%__jact_source_json_path%" ]; then
+          rpath=`dirname $(readlink %__jact_source_json_path%)`
         else
-          rpath=`dirname %__jbcc_source_json_path%`
+          rpath=`dirname %__jact_source_json_path%`
         fi
         source_json_path="${rpath}/$source_json_path"
       fi
@@ -37,19 +37,19 @@ _make_path_%__jbcc_function_name%()
 )
 
 # main func
-%__jbcc_function_name%() {
+%__jact_function_name%() {
   local static_path params source_json_path
-  read source_json_path static_path params <<< $(_make_path_%__jbcc_function_name% "$@")
+  read source_json_path static_path params <<< $(_make_path_%__jact_function_name% "$@")
   if [[ -z $source_json_path ]]; then
-    echo "JBCC Error: no path is defined at [$@] in \"%__jbcc_source_json_path%\""
+    echo "JACT Error: no path is defined at [$@] in \"%__jact_source_json_path%\""
     return 1;
   fi
 
-  local jq_filter=`echo ${static_path}.${__jbcc_exec_key} | sed "s/\.\././g"`
+  local jq_filter=`echo ${static_path}.${__jact_exec_key} | sed "s/\.\././g"`
   local command_body=`jq -r ${jq_filter} ${source_json_path}`
 
   if [[ $command_body =~ "null" ]]; then
-    echo "JBCC Error: no execution command is defined at: [${static_path}]"
+    echo "JACT Error: no execution command is defined at: [${static_path}]"
     return 1
   fi
 
@@ -65,19 +65,19 @@ _make_path_%__jbcc_function_name%()
 
   # replace {SELF} tag
   if [[ $command_body =~ "\{SELF\}" ]]; then
-    local command_basename=`basename %__jbcc_source_json_path% .json`
+    local command_basename=`basename %__jact_source_json_path% .json`
     command_body=`echo $command_body | sed "s#{SELF}#${command_basename}#g"` # use '#' as a sed seperator.
   fi
 
   # if arguments are not enough
   if [[ $command_body =~ "\{[0-9]\}" ]]; then
     # check default command
-    local default_jq_filter=`echo ${static_path}.${__jbcc_default_key} | sed "s/\.\././g"`
+    local default_jq_filter=`echo ${static_path}.${__jact_default_key} | sed "s/\.\././g"`
     command_body=`jq -r "try(${default_jq_filter})" ${source_json_path}`
 
     # show error if default command is not exist
     if [[ $command_body =~ "null" ]]; then
-      echo "JBCC Error: arguments are not enough" # TODO: more friendly message
+      echo "JACT Error: arguments are not enough" # TODO: more friendly message
       return 1;
     fi
   fi
@@ -86,12 +86,12 @@ _make_path_%__jbcc_function_name%()
 }
 
 # completion func
-__completion_%__jbcc_function_name%()
+__completion_%__jact_function_name%()
 {
   COMPREPLY=()
 
   local static_path params source_json_path
-  read source_json_path static_path params <<< $(_make_path_%__jbcc_function_name% ${COMP_WORDS[@]:1:(COMP_CWORD-1)})
+  read source_json_path static_path params <<< $(_make_path_%__jact_function_name% ${COMP_WORDS[@]:1:(COMP_CWORD-1)})
   params=`echo "$params" | tr '.' ' ' | xargs`
 
   local root_jq_result=`jq -r "try (${static_path} | keys[] | @sh)" ${source_json_path}`
@@ -102,7 +102,7 @@ __completion_%__jbcc_function_name%()
     completion_list=${trimed_jq_result}
   elif [[ ${root_jq_result[@]} =~ "__exec" ]]; then
     local param_num=`echo ${params} | wc -w | sed 's/ //g'`
-    local comp_command="${__jbcc_comp_key}${param_num}"
+    local comp_command="${__jact_comp_key}${param_num}"
     local jq_filter=`echo ${static_path}.${comp_command} | sed "s/\.\././g"` # remvoe duplicated .
     exec_command=`jq -r "try (${jq_filter})" ${source_json_path}`
     if [[ ${exec_command} != "null" ]]; then
@@ -114,4 +114,4 @@ __completion_%__jbcc_function_name%()
 }
 
 # bind completion function
-complete -F __completion_%__jbcc_function_name% %__jbcc_function_name%
+complete -F __completion_%__jact_function_name% %__jact_function_name%
