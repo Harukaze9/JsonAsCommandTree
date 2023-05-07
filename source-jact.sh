@@ -26,7 +26,7 @@ __jact_source_dir="${__jact_root_dir}/source"
 # ============  load commands from json ========================== #
 __jact_source_each_json_commands() {
   find ${__jact_generated_dir} -name "*.sh" -type f -delete
-  for source_json in `find "${__jact_source_dir}" \( -type f -o -type l \) -maxdepth 1 -name "*.json" `
+  for source_json in `find "${__jact_source_dir}" -maxdepth 1 \( -type f -o -type l \) -name "*.json" `
   do
     local basename=$(basename "${source_json}" .json)
     local temp_filename="${__jact_generated_dir}/jact_${basename}.sh"
@@ -38,7 +38,7 @@ __jact_source_each_json_commands() {
 __jact_source_each_json_commands
 
 # =============== source scripts =======================
-for source_script in `find "${__jact_source_dir}" \( -type f -o -type l \) -maxdepth 1 -name "*.sh" `
+for source_script in `find "${__jact_source_dir}" -maxdepth 1 \( -type f -o -type l \) -name "*.sh" `
 do
 source "${source_script}"
 done

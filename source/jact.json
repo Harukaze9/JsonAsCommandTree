@@ -10,24 +10,24 @@
         "__exec": "jact _refresh; echo 'refresh completed!'"
     },
     "_list_commands": {
-        "__exec": "find ${__jact_source_dir} \\( -type f -o -type l \\)   -maxdepth 1 -name '*.json' | sed -E 's|.*\/([^\/]+)\\.json$|\\1\t(&)|'"
+        "__exec": "find ${__jact_source_dir} -maxdepth 1 \\( -type f -o -type l \\) -name '*.json' | sed -E 's|.*\/([^\/]+)\\.json$|\\1\t(&)|'"
     },
     "_list_scripts": {
-        "__exec": "find ${__jact_source_dir} \\( -type f -o -type l \\)   -maxdepth 1 -name '*.sh' | sed -E 's|.*\/([^\/]+)\\.sh$|\\1.sh\t(&)|'"
+        "__exec": "find ${__jact_source_dir} -maxdepth 1 \\( -type f -o -type l \\) -name '*.sh' | sed -E 's|.*\/([^\/]+)\\.sh$|\\1.sh\t(&)|'"
     },
     "list": {
         "__exec": "echo \"[JACT installed list]\n====== [commands] ========\n`jact _list_commands`\n======= [scripts] ======\n`jact _list_scripts` \n===============\""
     },
     "install": {
         "__exec": "ln -s $(realpath {0}) ${__jact_source_dir} && echo '[{0}] is installed!\n' && jact _refresh && jact list",
-        "__0": "find . \\( -type f -o -type l \\)  -maxdepth 1 \\( -name '*.json' -or -name '*.sh' \\) -exec basename {} \\;"
+        "__0": "find . -maxdepth 1 \\( -type f -o -type l \\) \\( -name '*.json' -or -name '*.sh' \\) -exec basename {} \\;"
     },
     "uninstall": {
         "__exec": "rm ${__jact_source_dir}/{0} && echo '[{0}] is uninstalled!\n' && jact _refresh && jact list",
-        "__0": "find ${__jact_source_dir}  \\( -type f -o -type l \\) -maxdepth 1 \\( -name '*.json' -or -name '*.sh' \\) -exec basename {} \\;"
+        "__0": "find ${__jact_source_dir} -maxdepth 1  \\( -type f -o -type l \\) \\( -name '*.json' -or -name '*.sh' \\) -exec basename {} \\;"
     },
     "edit": {
         "__exec": "vim $(realpath ${__jact_source_dir}/{0})",
-        "__0": "find ${__jact_source_dir}  \\( -type f -o -type l \\) -maxdepth 1 \\( -name '*.json' -or -name '*.sh' \\) -exec basename {} \\;"
+        "__0": "find ${__jact_source_dir} -maxdepth 1  \\( -type f -o -type l \\) \\( -name '*.json' -or -name '*.sh' \\) -exec basename {} \\;"
     }
 }
