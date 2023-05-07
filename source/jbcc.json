@@ -16,7 +16,7 @@
         "__exec": "find ${__jbcc_source_dir} \\( -type f -o -type l \\)   -maxdepth 1 -name '*.sh' | sed -E 's|.*\/([^\/]+)\\.sh$|\\1.sh\t(&)|'"
     },
     "list": {
-        "__exec": "echo \"[JBCC installed list]\n====== [commands] ========\n`jbcc _list_commands`\n======= [scripts] ======\n`jbcc _list_scripts` \n=======\""
+        "__exec": "echo \"[JBCC installed list]\n====== [commands] ========\n`jbcc _list_commands`\n======= [scripts] ======\n`jbcc _list_scripts` \n===============\""
     },
     "install": {
         "__exec": "ln -s $(realpath {0}) ${__jbcc_source_dir} && echo '[{0}] is installed!\n' && jbcc _refresh && jbcc list",

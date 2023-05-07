@@ -12,6 +12,6 @@
     },
     "exec": {
         "__comp_0": "__jbcc_store -c alias -o complement",
-        "__exec": "`__jbcc_store -c clipboard -o get -k {0}`"
+        "__exec": "`__jbcc_store -c alias -o get -k {0}`"
     }
 }
