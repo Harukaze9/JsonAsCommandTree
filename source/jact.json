@@ -16,7 +16,7 @@
         "__exec": "find ${__jact_source_dir} -maxdepth 1 \\( -type f -o -type l \\) -name '*.sh' | sed -E 's|.*\/([^\/]+)\\.sh$|\\1.sh\t(&)|'"
     },
     "list": {
-        "__exec": "echo \"[JACT installed list]\n====== [commands] ========\n`jact _list_commands`\n======= [scripts] ======\n`jact _list_scripts` \n===============\""
+        "__exec": "echo \"[JACT installed list]\n====== [commands] ========\n`jact _list_commands`\n====== [scripts] =========\n`jact _list_scripts` \n==========================\""
     },
     "install": {
         "__exec": "ln -s $(realpath {0}) ${__jact_source_dir} && echo '[{0}] is installed!\n' && jact _refresh && jact list",
