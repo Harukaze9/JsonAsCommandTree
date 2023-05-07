@@ -23,12 +23,11 @@ __jbcc_commands_dir="${__jbcc_root_dir}/commands"
 
 # ================================================ #
 
+
+# ============  load commands from json ========================== #
 __jbcc_source_each_json_commands() {
-  local sources_from_dir=`ls ${__jbcc_root_dir}/commands/*.json | tr '\n' ' '`
-  local sources_from_config=`jq -r ".commands[]" ${__jbcc_config_path} | tr '\n' ' '`
-  eval "local source_json_files=(${sources_from_dir} ${sources_from_config})"
   find ${__jbcc_generated_dir} -name "*.sh" -type f -delete
-  for source_json in "${source_json_files[@]}"
+  for source_json in `ls ${__jbcc_root_dir}/commands/*.json`
   do
     local basename=$(basename "${source_json}" .json)
     local temp_filename="${__jbcc_generated_dir}/jbcc_${basename}.sh"
@@ -39,7 +38,9 @@ __jbcc_source_each_json_commands() {
 
 __jbcc_source_each_json_commands
 
-# =============== extensions (optional) =======================
-# loads __jbcc_store: a simple jq wrapper command
-source "${__jbcc_root_dir}/extension/store_extension.sh"
+# =============== source scripts =======================
+for source_script in `find "${__jbcc_root_dir}/commands/" -name "*.sh" -type f`
+do
+source "${source_script}"
+done
 # ==============================================================

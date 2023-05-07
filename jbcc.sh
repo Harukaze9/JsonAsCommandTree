@@ -94,7 +94,7 @@ __completion_%__jbcc_function_name%()
   params=`echo "$params" | tr '.' ' ' | xargs`
 
   local root_jq_result=`jq -r "try (${static_path} | keys[] | @sh)" ${source_json_path}`
-  local trimed_jq_result=`echo $root_jq_result | sed -E "s/'__[^ ]*//g"`
+  local trimed_jq_result=`echo $root_jq_result | sed -E "s/'_[^ ]*//g"` # filter out words start from _
 
   local completion_list
   if [[ -n "${trimed_jq_result// }" ]]; then

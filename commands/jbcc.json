@@ -1,25 +1,29 @@
 {
     "__exec": "jbcc help",
+    "_refresh": {
+        "__exec": "source ${__jbcc_root_dir}/source-jbcc.sh"
+    },
     "refresh": {
-        "__exec": "source ${__jbcc_root_dir}/source-jbcc.sh; echo 'refresh completed!'"
+        "__exec": "jbcc _refresh; echo 'refresh completed!'"
     },
     "help": {
         "__exec": "echo 'write help here'"
     },
-    "_list_config_commands": {
-        "__exec": "jq -r '.commands[]' ${__jbcc_config_path} | sed -E 's|.*\/([^\/]+)\\.json$|\\1\t(&)|'"
-    },
-    "_list_dir_commands": {
+    "_list_commands": {
         "__exec": "find ${__jbcc_commands_dir} -type f -name '*.json' | sed -E 's|.*\/([^\/]+)\\.json$|\\1\t(&)|'"
     },
+    "_list_scripts": {
+        "__exec": "find ${__jbcc_commands_dir} -type f -name '*.sh' | sed -E 's|.*\/([^\/]+)\\.sh$|\\1.sh\t(&)|'"
+    },
     "list": {
-        "__exec": "echo \"====================\n[commands loaded by config]\n`jbcc _list_config_commands`\n[commands loaded by directory]\n`jbcc _list_dir_commands`\n=================\""
+        "__exec": "echo \"[JBCC installed list]\n====== [commands] ========\n`jbcc _list_commands`\n======= [scripts] ======\n`jbcc _list_scripts` \n=======\""
     },
     "install": {
-        "__exec": "jq '.commands |= .+ [\"`readlink -f {0}`\"]' ${__jbcc_config_path} > tmp && mv tmp ${__jbcc_config_path}; jbcc refresh",
-        "__comp_0": "ls *.json"
+        "__exec": "cp {0} ${__jbcc_commands_dir} && echo '[{0}] is installed!\n' && jbcc _refresh && jbcc list",
+        "__comp_0": "find . -type f -maxdepth 1 \\( -name '*.json' -or -name '*.sh' \\) -exec basename {} \\;"
     },
     "uninstall": {
-        "__exec": "jq . ${__jbcc_config_path}"
+        "__exec": "rm ${__jbcc_commands_dir}/{0} && echo '[{0}] is uninstalled!\n' && jbcc _refresh && jbcc list",
+        "__comp_0": "find ${__jbcc_commands_dir} -type f -maxdepth 1 \\( -name '*.json' -or -name '*.sh' \\) -exec basename {} \\;"
     }
 }
