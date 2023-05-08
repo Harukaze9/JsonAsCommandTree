@@ -1,6 +1,6 @@
 jact.log
 command.json
-gallary/store.json
+gallery/store.json
 generated/*
 !generated/.gitkeep
 
