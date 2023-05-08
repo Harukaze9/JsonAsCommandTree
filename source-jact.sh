@@ -2,9 +2,8 @@
 __jact_exec_key="__exec"
 __jact_comp_key="__"
 __jact_default_key="__default"
-# ================================================ #
 
-# =============== load script's paths ==================== #
+# =============== load script paths ==================== #
 # Use script's location as the root directory
 if [ -n "$BASH_VERSION" ]; then
   __jact_root_dir=$(cd $(dirname ${BASH_SOURCE:-$0}); pwd) # for bash
@@ -20,17 +19,13 @@ __jact_config_path="${__jact_root_dir}/config.json"
 __jact_generated_dir="${__jact_root_dir}/generated"
 __jact_source_dir="${__jact_root_dir}/source"
 
-# ================================================ #
-
 # =========== check dependency =================== #
 if ! command -v jq >/dev/null 2>&1 ; then
-  echo "Warning: jq is not installed. please install jq to use jact"
+  echo "JACT Warning: jq is not installed. please install jq to use JACT"
 fi
 if ! command -v sed >/dev/null 2>&1 ; then
-  echo "Warning: sed is not installed. please install sed to use jact"
+  echo "JACT Warning: sed is not installed. please install sed to use JACT"
 fi
-# ================================================ #
-
 
 # ============  load commands from json ========================== #
 __jact_source_each_json_commands() {

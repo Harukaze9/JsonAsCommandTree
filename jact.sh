@@ -48,7 +48,7 @@ _make_path_%__jact_function_name%()
   local jq_filter=`echo ${static_path}.${__jact_exec_key} | sed "s/\.\././g"`
   local command_body=`jq -r ${jq_filter} ${source_json_path}`
 
-  if [[ $command_body =~ "null" ]]; then
+  if [[ $command_body == "null" ]]; then
     echo "JACT Error: no execution command is defined at: [${static_path}]"
     return 1
   fi
