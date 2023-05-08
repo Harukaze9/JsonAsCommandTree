@@ -1,7 +1,8 @@
 jact.log
 command.json
 gallary/store.json
-generated
+generated/*
+!generated/.gitkeep
 
 source/*
 
