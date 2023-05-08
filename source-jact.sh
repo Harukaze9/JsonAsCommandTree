@@ -22,6 +22,15 @@ __jact_source_dir="${__jact_root_dir}/source"
 
 # ================================================ #
 
+# =========== check dependency =================== #
+if ! command -v jq >/dev/null 2>&1 ; then
+  echo "Warning: jq is not installed. please install jq to use jact"
+fi
+if ! command -v sed >/dev/null 2>&1 ; then
+  echo "Warning: sed is not installed. please install sed to use jact"
+fi
+# ================================================ #
+
 
 # ============  load commands from json ========================== #
 __jact_source_each_json_commands() {
