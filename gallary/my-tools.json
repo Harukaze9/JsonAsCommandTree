@@ -1,0 +1,22 @@
+{
+    "docker": {
+        "create": {
+            "__exec": "docker run -it -d --name {1} {0} bash",
+            "__0": "echo ubuntu:18.04 debian:9 centos:7 node:14"
+        },
+        "connect": {
+            "__exec": "docker exec -it {0} /bin/bash",
+            "__0": "docker ps --format '{{.Names}}'"
+        },
+        "stop": {
+            "__exec": "docker stop {0}",
+            "__0": "docker ps --format '{{.Names}}'"
+        },
+        "remove": {
+            "__exec": "docker remove -f {0}",
+            "__0": "docker ps -a --format '{{.Names}}'"
+        }
+    },
+    "goto": "jj/goto.json",
+    "clipboard": "jj/clipboard.json"
+}
