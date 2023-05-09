@@ -121,6 +121,15 @@ $ my-docker-util connect
 
 the completion command `docker ps --format '{{.Names}}'` is processed, and input completion candidates are created using the names of running processes in Docker. In this way, you can easily specify completion commands as needed.
 
+## Contributing
+
+We welcome contributions from everyone, regardless of their background or expertise. Here are some ways you can contribute to our project:
+
+- Fork the repository and create your own branch for new features or bug fixes.
+- Report bugs or suggest new features by opening an issue.
+
+Thank you for your support and interest in our project!
+
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
