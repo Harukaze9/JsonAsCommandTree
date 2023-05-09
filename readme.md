@@ -1,10 +1,10 @@
 # JACT (Json As Command Tree)
 
-**JACT** is an open-source tool for bash and zsh shells designed to simplify navigating and manipulating JSON files using the command line. With JACT, you can easily:
+**JACT** is an open-source tool for bash and zsh shells designed to simplify creating shell commands from JSON. With JACT, you can easily:
 
 - Pass arguments to your aliases
 - Define input autocompletion for your aliases (or shell functions)
-- Create hierarchical aliases
+- Create hierarchical commands
 
 Using JACT is incredibly simple, as it primarily works with JSON files.
 
