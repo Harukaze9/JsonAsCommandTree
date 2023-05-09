@@ -35,8 +35,6 @@ source /path/to/JsonAsCommandTree/source-jact.sh
 3. Restart your shell or run `source ~/.bashrc` or `source ~/.zshrc`
 
 ## Usage
-## Usage
-
 ### Creating Commands
 Create a command definition file in the format `[command_name].json`. Then, install it to **JACT** using either of the following methods:
 
@@ -67,7 +65,7 @@ We provide a brief description of the **JACT** format, followed by an example.
 The value of a regular key (subcommand name) can also be an external JSON file specified as a string, with an absolute or relative path from that JSON file.
 
 #### Example
-Here is an example of a **JACT** command definition file:
+Here is an example of a **JACT** command definition file named `my-docker-util.json`
 
 ```my-docker-util.json
 {
@@ -96,10 +94,32 @@ you will get the command result described in the `__exec` key directly below:
 It has "create" and "connect" as subcommands. By executing
 
 ```
-$ my-docker-util connect my-ubuntu-1
+$ my-docker-util create
 ```
 
-the subcommand "my-tools docker" will be called with arguments.
+the completion function `echo ubuntu:18.04 debian:9 centos:7 node:14` is executed and the following image names appear as completion candidates:
+
+> ubuntu:18.04 debian:9 centos:7 node:14
+
+When you execute:
+
+```
+$ my-docker-util create ubuntu:18.04 my-ubuntu-1
+```
+
+JACT automatically replaces the arguments and runs the following command:
+
+```
+$ docker run -it -d --name my-ubuntu-1 ubuntu:18.04 bash
+```
+
+Similarly, when you enter the following command and press the Tab key:
+
+```
+$ my-docker-util connect
+```
+
+the completion command `docker ps --format '{{.Names}}'` is processed, and input completion candidates are created using the names of running processes in Docker. In this way, you can easily specify completion commands as needed.
 
 ## License
 
