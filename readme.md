@@ -1,12 +1,12 @@
 # JACT (Json As Command Tree)
 
-JACT is an open-source tool for bash and zsh shells designed to make it easy to navigate and manipulate JSON files using command-line. With JACT, you can easily:
+**JACT** is an open-source tool for bash and zsh shells designed to simplify navigating and manipulating JSON files using the command line. With JACT, you can easily:
 
 - Pass arguments to your aliases
 - Define input autocompletion for your aliases (or shell functions)
 - Create hierarchical aliases
 
-Using JACT is incredibly simple by just working with JSON files.
+Using JACT is incredibly simple, as it primarily works with JSON files.
 
 ## Prerequisites
 
@@ -36,16 +36,16 @@ source /path/to/JsonAsCommandTree/source-jact.sh
 
 ## Usage
 ### Creating Commands
-Create a command definition file in the format `[command_name].json`. Then, install it to **JACT** using either of the following methods:
+Create a command definition file in the format `[command_name].json`. Then, install it to JACT using either of the following methods:
 
 - Execute `$ jact install [command_name].json`
 - Place the created JSON file in `(JACT root directory)/source`, then execute `$ jact refresh` or restart the shell.
 
 ### Writing JSON Command Definition Files
-We provide a brief description of the **JACT** format, followed by an example.
+We provide a brief description of the JACT format, followed by an example.
 
 #### Rules for Command Definition Files
-**JACT** reads command definition files with these rules:
+JACT reads command definition files with these rules:
 
 - The JSON file name is treated as the **command name**.
 - JSON keys are divided into "regular keys" that have an object as a value and "special keys" that have a string as a value.
@@ -64,8 +64,8 @@ We provide a brief description of the **JACT** format, followed by an example.
 ##### Referencing External JSON Files
 The value of a regular key (subcommand name) can also be an external JSON file specified as a string, with an absolute or relative path from that JSON file.
 
-#### Example
-Here is an example of a **JACT** command definition file named `my-docker-util.json`
+## Example
+Here is an example of a JACT command definition file named `my-docker-util.json`
 
 ```my-docker-util.json
 {
