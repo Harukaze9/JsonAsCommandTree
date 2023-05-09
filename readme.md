@@ -8,6 +8,17 @@
 
 Using JACT is incredibly simple, as it primarily works with JSON files.
 
+For example, by creating a `my-docker-run-command.json` file as shown below:
+
+```my-docker-run-command.json
+{
+    "__exec": "docker run -it -d --name {1} {0} bash",
+    "__0": "echo ubuntu:18.04 debian:9 centos:7 node:14"
+}
+```
+
+You can effortlessly generate the `my-docker-run-command`, which accepts two arguments and offers customized input autocompletion candidates for the first argument. Furthermore, any modifications to the JSON file will be immediately applied to the command!
+
 ## Prerequisites
 
 To use JACT, you need the following environment:
