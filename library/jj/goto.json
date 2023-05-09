@@ -1,0 +1,17 @@
+{
+    "__exec": "__jact_store -c goto -o list ",
+    "list": {
+        "__exec": "__jact_store -c goto -o list "
+    },
+    "add": {
+        "__exec": "__jact_store -c goto -o add -k {0} -v $(pwd)"
+    },
+    "remove": {
+        "__exec": "__jact_store -c goto -o remove -k {0}",
+        "__0": "__jact_store -c goto -o complement"
+    },
+    "exec": {
+        "__exec": "cd $(__jact_store -c goto -o get -k {0})",
+        "__0": "__jact_store -c goto -o complement"
+    }
+}

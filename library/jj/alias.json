@@ -1,0 +1,17 @@
+{
+    "__exec": "__jact_store -c alias -o list ",
+    "list": {
+        "__exec": "__jact_store -c alias -o list "
+    },
+    "add": {
+        "__exec": "__jact_store -c alias -o add -k {0} -v \"{1}\""
+    },
+    "remove": {
+        "__exec": "__jact_store -c alias -o remove -k {0}",
+        "__0": "__jact_store -c alias -o complement"
+    },
+    "exec": {
+        "__exec": "`__jact_store -c alias -o get -k {0}`",
+        "__0": "__jact_store -c alias -o complement"
+    }
+}

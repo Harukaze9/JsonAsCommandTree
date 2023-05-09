@@ -1,0 +1,5 @@
+{
+    "__exec": "cd $(__jact_store -c goto -o get -k {0})",
+    "__0": "__jact_store -c goto -o complement",
+    "__default": "cd $(__jact_store -c goto -o get -k default)"
+}

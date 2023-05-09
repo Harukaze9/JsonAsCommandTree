@@ -1,0 +1,21 @@
+{
+    "__exec": "__jact_store -c note -o list ",
+    "list": {
+        "__exec": "__jact_store -c note -o list "
+    },
+    "bookmark": {
+        "__exec": "__jact_store -c note -o add -k {1} -v `readlink -f {0}`",
+        "__0": "find . -type f -maxdepth 1 -exec basename {} \\;"
+    },
+    "create": {
+        "__exec": "__jact_store -c note -o add -k {0} -v ~/jact_notes/{0}"
+    },
+    "remove": {
+        "__exec": "__jact_store -c note -o remove -k {0};",
+        "__0": "__jact_store -c note -o complement"
+    },
+    "exec": {
+        "__exec": "vim `__jact_store -c note -o get -k {0}`",
+        "__0": "__jact_store -c note -o complement"
+    }
+}
