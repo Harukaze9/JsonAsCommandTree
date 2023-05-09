@@ -7,11 +7,11 @@
         "__exec": "__jact_store -c goto -o add -k {0} -v $(pwd)"
     },
     "remove": {
-        "__0": "__jact_store -c goto -o complement",
-        "__exec": "__jact_store -c goto -o remove -k {0}"
+        "__exec": "__jact_store -c goto -o remove -k {0}",
+        "__0": "__jact_store -c goto -o complement"
     },
     "exec": {
-        "__0": "__jact_store -c goto -o complement",
-        "__exec": "cd $(__jact_store -c goto -o get -k {0})"
+        "__exec": "cd $(__jact_store -c goto -o get -k {0})",
+        "__0": "__jact_store -c goto -o complement"
     }
 }
