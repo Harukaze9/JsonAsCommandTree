@@ -2,11 +2,11 @@
 
 JACT is an open-source tool for bash and zsh shells designed to make it easy to navigate and manipulate JSON files using command-line. With JACT, you can easily:
 
-- Create hierarchical aliases
 - Pass arguments to your aliases
 - Define input autocompletion for your aliases (or shell functions)
+- Create hierarchical aliases
 
-JACT relies on the `jq` and `sed` commands. Creating and using JACT is incredibly simple by just working with JSON files.
+Using JACT is incredibly simple by just working with JSON files.
 
 ## Prerequisites
 
@@ -20,16 +20,16 @@ To use JACT, you need the following environment:
 
 Installing JACT is easy. Follow the steps below:
 
-1. Clone this repository:
+1. Clone this repository to your preferred location:
 
 ```
-git clone https://github.com/yourusername/jact.git
+git clone https://github.com/Harukaze9/JsonAsCommandTree.git
 ```
 
 2. Add the following line to your `.bashrc` or `.zshrc` file:
 
 ```bash
-source /path/to/jact/source-jact.sh
+source /path/to/JsonAsCommandTree/source-jact.sh
 ```
 
 3. Restart your shell or run `source ~/.bashrc` or `source ~/.zshrc`
