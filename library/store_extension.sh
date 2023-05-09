@@ -1,4 +1,4 @@
-__jact_store_path="${__jact_root_dir}/gallery/store.json" #
+__jact_store_path="${__jact_root_dir}/store.json" #
 
 __jact_store_show()
 {
