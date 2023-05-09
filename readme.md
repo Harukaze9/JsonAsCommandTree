@@ -17,7 +17,7 @@ For example, by creating a `my-docker-run-command.json` file as shown below:
 }
 ```
 
-You can effortlessly generate the `my-docker-run-command`, which accepts two arguments and offers customized input autocompletion candidates for the first argument. Furthermore, any modifications to the JSON file will be immediately applied to the command!
+You can effortlessly generate the `my-docker-run-command`, which accepts two arguments and offers customized input autocompletion candidates for the first argument. Furthermore, any modifications to the JSON file will be immediately applied to the command anytime!
 
 ## Prerequisites
 
