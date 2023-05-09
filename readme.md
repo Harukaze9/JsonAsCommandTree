@@ -53,6 +53,7 @@ JACT reads command definition files with these rules:
 
 ##### Regular Keys
 "Regular keys" have a non-empty object as their value and are treated as **subcommand names**. The value object represents the definition of that subcommand.
+It is worth noting that the JSON filename can be considered as the regular key for the entire JSON object.
 
 ##### Special Keys
 "Special keys" have a string as their value and define the behavior of a command (or subcommand) during execution or input completion. Special keys include:
