@@ -15,15 +15,17 @@
     "_list_scripts": {
         "__exec": "find ${__jact_source_dir} -maxdepth 1 \\( -type f -o -type l \\) -name '*.sh' | sed -E 's|.*\/([^\/]+)\\.sh$|\\1.sh\t(&)|'"
     },
-    "preset-commands": {
-        "_create_store_json": {
-            "__exec": "test -f ${__jact_root_dir}/gallery/store.json || echo '{\"alias\": {}, \"goto\": {}, \"clipboard\": {}, \"note\": {}}' > ${__jact_root_dir}/gallery/store.json"
-        },
-        "install": {
-            "__exec": "for f in jj.json cdd.json store_extension.sh; do jact install ${__jact_root_dir}/gallery/$f >/dev/null; done; jact preset-commands _create_store_json; echo -e \"Finished install presets!\\n\"; jact list"
-        },
-        "uninstall": {
-            "__exec": "for f in jj.json cdd.json store_extension.sh; do rm -f ${__jact_source_dir}/$f; done; echo -e \"Finished uninstall presets!\\n\"; jact list"
+    "packages": {
+        "preset": {
+            "_create_store_json": {
+                "__exec": "test -f ${__jact_root_dir}/gallery/store.json || echo '{\"alias\": {}, \"goto\": {}, \"clipboard\": {}, \"note\": {}}' > ${__jact_root_dir}/gallery/store.json"
+            },
+            "install": {
+                "__exec": "for f in jj.json cdd.json store_extension.sh; do jact install ${__jact_root_dir}/gallery/$f >/dev/null; done; jact preset-commands _create_store_json; echo -e \"Finished install presets!\\n\"; jact list"
+            },
+            "uninstall": {
+                "__exec": "for f in jj.json cdd.json store_extension.sh; do rm -f ${__jact_source_dir}/$f; done; echo -e \"Finished uninstall presets!\\n\"; jact list"
+            }
         }
     },
     "list": {
