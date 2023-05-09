@@ -35,48 +35,71 @@ source /path/to/JsonAsCommandTree/source-jact.sh
 3. Restart your shell or run `source ~/.bashrc` or `source ~/.zshrc`
 
 ## Usage
+## Usage
 
-Create a JSON file with your desired command tree structure:
+### Creating Commands
+Create a command definition file in the format `[command_name].json`. Then, install it to **JACT** using either of the following methods:
 
-```json
+- Execute `$ jact install [command_name].json`
+- Place the created JSON file in `(JACT root directory)/source`, then execute `$ jact refresh` or restart the shell.
+
+### Writing JSON Command Definition Files
+We provide a brief description of the **JACT** format, followed by an example.
+
+#### Rules for Command Definition Files
+**JACT** reads command definition files with these rules:
+
+- The JSON file name is treated as the **command name**.
+- JSON keys are divided into "regular keys" that have an object as a value and "special keys" that have a string as a value.
+- Any JSON object element defines a subcommand corresponding to its key name.
+
+##### Regular Keys
+"Regular keys" have a non-empty object as their value and are treated as **subcommand names**. The value object represents the definition of that subcommand.
+
+##### Special Keys
+"Special keys" have a string as their value and define the behavior of a command (or subcommand) during execution or input completion. Special keys include:
+
+- `__exec` key: Execution command.
+- `__N` key: Completion command corresponding to the Nth argument of the execution command.
+- `__default` key: A command executed instead of an error when there are insufficient arguments for the command specified by the `__exec` key.
+
+##### Referencing External JSON Files
+The value of a regular key (subcommand name) can also be an external JSON file specified as a string, with an absolute or relative path from that JSON file.
+
+#### Example
+Here is an example of a **JACT** command definition file:
+
+```my-docker-util.json
 {
-  "example": {
-    "command": "echo 'This is an example command'",
-    "subcommands": {
-      "subexample": {
-        "command": "echo 'This is a subexample command'",
-        "args": [
-          {
-            "name": "arg1",
-            "description": "This is argument 1",
-            "value": "default_value"
-          }
-        ]
-      }
+    "__exec": "echo 'what a cute whale!!'",
+    "create": {
+        "__exec": "docker run -it -d --name {1} {0} bash",
+        "__0": "echo ubuntu:18.04 debian:9 centos:7 node:14"
+    },
+    "connect": {
+        "__exec": "docker exec -it {0} /bin/bash",
+        "__0": "docker ps --format '{{.Names}}'"
     }
-  }
 }
 ```
 
-Then, load your JSON file using the `jact_load` function:
+In this example,
+`my-docker-util` is the command name, and by executing
 
-```bash
-jact_load /path/to/your/json/file.json
+```
+$ my-docker-util
 ```
 
-Now, you can use your defined aliases:
+you will get the command result described in the `__exec` key directly below:
+> what a cute whale!!
 
-```bash
-example
-example subexample
-example subexample --arg1 custom_value
+It has "create" and "connect" as subcommands. By executing
+
+```
+$ my-docker-util connect my-ubuntu-1
 ```
 
-To enable autocompletion for your aliases, make sure to add `_jact_autocomplete` to your shell's completion system. For example, in Zsh:
-
-```bash
-compdef _jact_autocomplete example
-```
+the subcommand "my-tools docker" will be called with arguments.
 
 ## License
 
