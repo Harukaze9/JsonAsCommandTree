@@ -51,6 +51,11 @@ __jact_store()
         local arg_description=$arg_category
     fi
 
+    if ! [[ -f ${__jact_store_path} ]]; then
+        echo "store.json is not exist. created store.json: ${__jact_store_path}"
+        echo '{}' > ${__jact_store_path}
+    fi
+
     case $arg_operation in
         add)
         local result=`jq ".${arg_category}.\"${arg_key}\" = \"${arg_value}\"" $__jact_store_path`
@@ -80,6 +85,19 @@ __jact_store()
         ;;
         get)
         echo `jq -r ".${arg_category}.\"${arg_key}\"" ${__jact_store_path}`
+        ;;
+        create)
+        # create category key if not already exist
+        if [[ `jq ".${arg_category}" $__jact_store_path` == "null" ]]; then
+            local result=`jq ".${arg_category} = {}" $__jact_store_path`
+            if [[ -n ${result} ]]; then
+                echo -E $result > $__jact_store_path
+                echo "successfully added store category: \"${arg_category}\""
+                __jact_store_show $arg_description $arg_category
+            else
+                echo "jq error occured";
+            fi
+        fi
         ;;
         *)
         echo "Usage: $0 [-c arg_a] [-b arg_b] [-f]"

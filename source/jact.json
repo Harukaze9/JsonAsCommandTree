@@ -1,5 +1,5 @@
 {
-    "__exec": "jact help",
+    "__exec": "jact list",
     "help": {
         "__exec": "echo 'jact list: Show list of installed commands and scripts by JACT\njact install: Intall specified file (.json or .sh)\njact uninstall: Uninstall specified file (.json or .sh)'"
     },
@@ -21,7 +21,7 @@
                 "__exec": "test -f ${__jact_store_path} || echo '{\"alias\": {}, \"goto\": {}, \"clipboard\": {}, \"note\": {}}' > ${__jact_store_path}"
             },
             "install": {
-                "__exec": "for f in jj.json cdd.json store_extension.sh; do jact install ${__jact_root_dir}/library/$f >/dev/null; done; jact packages preset _create_store_json; echo -e \"Finished install presets!\\n\"; jact list"
+                "__exec": "for f in jj.json cdd.json store_extension.sh; do jact install ${__jact_packages_dir}/$f >/dev/null; done; jact packages preset _create_store_json; echo -e \"Finished install presets!\\n\"; jact list"
             },
             "uninstall": {
                 "__exec": "for f in jj.json cdd.json store_extension.sh; do rm -f ${__jact_source_dir}/$f; done; echo -e \"Finished uninstall presets!\\n\"; jact list"
@@ -32,8 +32,10 @@
         "__exec": "echo -e \"[JACT installed list]\\n====== [commands] ========\\n`jact _list_commands`\\n====== [scripts] =========\\n`jact _list_scripts` \\n==========================\""
     },
     "install": {
-        "__exec": "ln -s $(realpath {0}) ${__jact_source_dir} && echo '[{0}] is installed!\n' && jact _refresh && jact list",
-        "__0": "find . -maxdepth 1 \\( -type f -o -type l \\) \\( -name '*.json' -or -name '*.sh' \\) -exec basename {} \\;"
+        "__exec": "jact _exec-install-command {0}; ln -s $(realpath {0}) ${__jact_source_dir} && echo '[{0}] is installed!\n' && jact _refresh && jact list"
+    },
+    "_exec-install-command": {
+        "__exec": "[[ {0} == *.json ]] && r=`jq -r \".__on_install\" {0}` && test $r != null && eval $r"
     },
     "uninstall": {
         "__exec": "rm ${__jact_source_dir}/{0} && echo '[{0}] is uninstalled!\n' && jact _refresh && jact list",
