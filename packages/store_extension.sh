@@ -31,7 +31,7 @@ __jact_store()
         local arg_description="$OPTARG"
         ;;
         *)
-        echo "Usage: $0 [-c arg_a] [-b arg_b] [-f]"
+        echo "Invalid options specified. only [c, k, v, o, d] is acceptable"
         return 1
         ;;
     esac
@@ -51,9 +51,21 @@ __jact_store()
         local arg_description=$arg_category
     fi
 
+    # create store.json if not exist
     if ! [[ -f ${__jact_store_path} ]]; then
         echo "store.json is not exist. created store.json: ${__jact_store_path}"
         echo '{}' > ${__jact_store_path}
+    fi
+
+    # create category key if not already exist
+    if [[ `jq ".${arg_category}" $__jact_store_path` == "null" ]]; then
+        local result=`jq ".${arg_category} = {}" $__jact_store_path`
+        if [[ -n ${result} ]]; then
+            echo -E $result > $__jact_store_path
+            echo "successfully added store category: \"${arg_category}\""
+        else
+            echo "jq error occured";
+        fi
     fi
 
     case $arg_operation in
