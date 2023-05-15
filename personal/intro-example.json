@@ -1,4 +1,0 @@
-{
-    "__exec": "docker run -it -d --name {1} {0} bash",
-    "__0": "echo ubuntu:18.04 debian:9 centos:7 node:14"
-}
