@@ -77,7 +77,8 @@ _make_path_%__jact_function_name%()
 
     # show error if default command is not exist
     if [[ $command_body =~ "null" ]]; then
-      echo "JACT Error: arguments are not enough" # TODO: more friendly message
+      local raw_static_path=`echo ${static_path} | sed 's/\."\([^"]*\)"\./\1 /g; s/"//g'`
+      echo "JACT Error: arguments are not enough for [%__jact_function_name% ${raw_static_path}]\nexecution command format is: \"`jq -r ${jq_filter} ${source_json_path}`\""
       return 1;
     fi
   fi
