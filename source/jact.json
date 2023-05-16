@@ -19,6 +19,7 @@
         "__exec": "find ${__jact_packages_dir} -maxdepth 1 -type f \\( -name '*.sh' -o -name '*.json' \\)  -exec basename {} \\;"
     },
     "packages": {
+        "__exec": "jact packages list",
         "list": {
             "__exec": "echo -e \"[JACT packages]\\n======================\\n`jact _list_packages`\\n======================\""
         },
