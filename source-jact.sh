@@ -18,6 +18,7 @@ __jact_log_path="${__jact_root_dir}/jact.log"
 __jact_config_path="${__jact_root_dir}/config.json"
 __jact_generated_dir="${__jact_root_dir}/generated"
 __jact_source_dir="${__jact_root_dir}/source"
+__jact_packages_dir="${__jact_root_dir}/packages"
 
 # =========== check dependency =================== #
 if ! command -v jq >/dev/null 2>&1 ; then

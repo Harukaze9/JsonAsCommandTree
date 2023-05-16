@@ -11,7 +11,7 @@
         "__0": "__jact_store -c clipboard -o complement"
     },
     "exec": {
-        "__exec": "echo -n `__jact_store -c clipboard -o get -k {0}` | pbcopy",
+        "__exec": "echo -n `__jact_store -c clipboard -o get -k {0}` | clip.exe",
         "__0": "__jact_store -c clipboard -o complement"
     }
 }

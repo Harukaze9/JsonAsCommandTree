@@ -1,0 +1,8 @@
+{
+    "__on_install": "mkdir -p ~/.jact/template",
+    "clipboard": "jj-clipboard.json",
+    "goto": "jj-goto.json",
+    "note": "jj-note.json",
+    "alias": "jj-alias.json",
+    "template": "jj-template.json"
+}

@@ -77,7 +77,13 @@ _make_path_%__jact_function_name%()
 
     # show error if default command is not exist
     if [[ $command_body =~ "null" ]]; then
-      echo "JACT Error: arguments are not enough" # TODO: more friendly message
+      local raw_static_path=""
+      local args=("$@") 
+      local valid_command_num=$(( ${#args[@]} - count))
+      for ((i = 0; i < ${valid_command_num}; i++)); do
+        raw_static_path+=" ${args[i+1]}"
+      done
+      echo "JACT Error: arguments are not enough for [%__jact_function_name%${raw_static_path}]\nexecution command format is: \"`jq -r ${jq_filter} ${source_json_path}`\""
       return 1;
     fi
   fi
@@ -103,10 +109,33 @@ __completion_%__jact_function_name%()
   elif [[ ${root_jq_result[@]} =~ "__exec" ]]; then
     local param_num=`echo ${params} | wc -w | sed 's/ //g'`
     local comp_command="${__jact_comp_key}${param_num}"
-    local jq_filter=`echo ${static_path}.${comp_command} | sed "s/\.\././g"` # remvoe duplicated .
+    local jq_filter=`echo ${static_path}.${comp_command} | sed "s/\.\././g"` # remove duplicated .
     exec_command=`jq -r "try (${jq_filter})" ${source_json_path}`
+    
     if [[ ${exec_command} != "null" ]]; then
+      # if completion command is defined...
       completion_list=`eval ${exec_command}`
+    else
+      # if completion command is not defined...
+
+      # --- emulates default completion of shell -------
+      local cur="${COMP_WORDS[COMP_CWORD]}"
+      for comp in $(compgen -f -- "$cur"); do
+          if [ -d "$comp" ]; then
+              comp="$comp/"
+          fi
+          COMPREPLY+=("$comp")
+      done
+      if [ ${#COMPREPLY[@]} -eq 1 ] && [ "${COMPREPLY[0]%/}" != "${COMPREPLY[0]}" ]; then
+          # Remove space after completion of a directory. No apparent way to make it compatible between bash and zsh.
+          if [ -n "$BASH_VERSION" ]; then
+              compopt -o nospace
+          elif [[ -n "${ZSH_VERSION}" ]]; then
+              COMPREPLY=`bash -c "compgen -f -- ${COMPREPLY[0]}"`
+          fi
+      fi
+      return
+      # ---------------------------------
     fi
   fi
 
