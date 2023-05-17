@@ -1,17 +1,16 @@
-__jact_store_path="${__jact_root_dir}/store.json" #
-
 __jact_store_show()
 {
     local description=$1
     local category=$2
 
     echo "=====[ $description ]====="
-    jq -r ".${category} | to_entries[] | \"\(.key): \(.value)\"" ${__jact_store_path}
+    jq -r ".${category} | to_entries[] | \"\(.key): \(.value)\"" ~/.jact/store.json
     echo "=========================="
 }
 
 __jact_store()
 {
+    local __jact_store_path=~/.jact/store.json
     local OPTIND
     while getopts "c:k:v:o:d:e:" option; do
     case $option in
@@ -53,7 +52,7 @@ __jact_store()
 
     # create store.json if not exist
     if ! [[ -f ${__jact_store_path} ]]; then
-        echo "store.json is not exist. created store.json: ${__jact_store_path}"
+        echo "store.json is not found. created store.json at: ${__jact_store_path}"
         echo '{}' > ${__jact_store_path}
     fi
 
