@@ -1,9 +1,6 @@
 jact.log
-command.json
-store.json
 generated/*
 !generated/.gitkeep
 
 source/*
-
 !source/jact.json
