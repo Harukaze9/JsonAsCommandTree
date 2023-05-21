@@ -4,3 +4,4 @@ generated/*
 
 source/*
 !source/jact.json
+!source/jact-util.sh
