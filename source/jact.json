@@ -16,15 +16,18 @@
         "__exec": "find ${__jact_source_dir} -maxdepth 1 \\( -type f -o -type l \\) -name '*.sh' | sed -E 's|.*\/([^\/]+)\\.sh$|\\1.sh\t(&)|'"
     },
     "_list_packages": {
-        "__exec": "find ${__jact_packages_dir} -maxdepth 1 -type f \\( -name '*.sh' -o -name '*.json' \\)  -exec basename {} \\;"
+        "__exec": "jq -r 'keys[]' ${__jact_packages_dir}/manifest.json"
     },
     "packages": {
-        "__exec": "jact packages list",
+        "__exec": "[[ -f ${__jact_packages_dir}/manifest.json ]] || jact update; jact packages list",
+        "update": {
+            "__exec": "curl https://raw.githubusercontent.com/Harukaze9/JACT-Packages/main/manifest.json > ${__jact_packages_dir}/manifest.json"
+        },
         "list": {
             "__exec": "echo -e \"[JACT packages]\\n======================\\n`jact _list_packages`\\n======================\""
         },
         "install": {
-            "__exec": "jact install ${__jact_packages_dir}/{0}",
+            "__exec": "(cd ${__jact_source_dir}; curl -O `jq -r '.\"{0}\"' ${__jact_packages_dir}/manifest.json`)",
             "__0": "jact _list_packages"
         },
         "uninstall": {
