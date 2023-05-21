@@ -36,7 +36,7 @@
         "__exec": "echo -e \"[JACT installed list]\\n====== [commands] ========\\n`jact _list_commands`\\n====== [scripts] =========\\n`jact _list_scripts` \\n==========================\""
     },
     "install": {
-        "__exec": "jact _exec-install-command {0}; ln -s $(realpath {0}) ${__jact_source_dir} && echo '[{0}] is installed!\n' && jact _refresh && jact list"
+        "__exec": "ln -s $(realpath {0}) ${__jact_source_dir} && jact _refresh && jact _exec-install-command {0} && echo '[{0}] is installed!\n' && jact list"
     },
     "_exec-install-command": {
         "__exec": "[[ {0} == *.json ]] && r=`jq -r \".__on_install\" {0}` && test $r != null && eval $r"
