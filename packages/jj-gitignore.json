@@ -1,0 +1,8 @@
+{
+    "__on_install": "mkdir -p ~/.jact; jj-gitignore _fetch",
+    "__exec": "curl https://raw.githubusercontent.com/github/gitignore/master/{0}.gitignore > .gitignore",
+    "__0": "cat ~/.jact/_comp_list_gitigore",
+    "_fetch": {
+        "__exec": "echo 'start fetching latest gitinore set...'; curl https://api.github.com/repos/github/gitignore/contents/ | jq -r \".[].name\" | awk '\/\\.gitignore$\/ {gsub(\/\\.gitignore$\/, \"\"); print}' > ~/.jact/_comp_list_gitigore"
+    }
+}
