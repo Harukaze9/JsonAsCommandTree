@@ -36,6 +36,16 @@ _make_path_%__jact_function_name%()
   echo $source_json_path $static_path $params 
 )
 
+_get_raw_static_path_%__jact_function_name%() {
+  local raw_static_path=""
+  local args=("$@") 
+  local valid_command_num=$(( ${#args[@]} - count))
+  for ((i = 0; i < ${valid_command_num}; i++)); do
+    raw_static_path+=" ${args[i+1]}"
+  done
+  echo "%__jact_function_name%${raw_static_path}"
+}
+
 # main func
 %__jact_function_name%() {
   local static_path params source_json_path
@@ -49,7 +59,12 @@ _make_path_%__jact_function_name%()
   local command_body=`jq -r ${jq_filter} ${source_json_path}`
 
   if [[ $command_body == "null" ]]; then
-    echo "JACT Error: no execution command is defined at: [${static_path}]"
+    local raw_static_path=`_get_raw_static_path_%__jact_function_name% $@`
+    echo "JACT Error: no execution command is defined for: [${raw_static_path}]"
+    local sub_commands=`jq -r "${static_path} | keys[]" ${source_json_path} | grep -v "^_" | sed 's/^/\t/'`
+    if [[ -n $sub_commands ]]; then
+      echo "However [${raw_static_path}] has `echo {$sub_commands} | wc -l` subcommands...!\n${sub_commands}"
+    fi
     return 1
   fi
 
@@ -77,12 +92,7 @@ _make_path_%__jact_function_name%()
 
     # show error if default command is not exist
     if [[ $command_body =~ "null" ]]; then
-      local raw_static_path=""
-      local args=("$@") 
-      local valid_command_num=$(( ${#args[@]} - count))
-      for ((i = 0; i < ${valid_command_num}; i++)); do
-        raw_static_path+=" ${args[i+1]}"
-      done
+      local raw_static_path=`_get_raw_static_path_%__jact_function_name% $@`
       echo "JACT Error: arguments are not enough for [%__jact_function_name%${raw_static_path}]\nexecution command format is: \"`jq -r ${jq_filter} ${source_json_path}`\""
       return 1;
     fi
