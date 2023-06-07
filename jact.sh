@@ -9,7 +9,11 @@ _make_path_%__jact_function_name%()
   for arg in "$@"
   do
     local cand_static_path=`echo ${static_path}.\"${arg}\"  | sed "s/\.\././g"`
-    if [[ -n `jq "try(${cand_static_path}) | select(type==\"string\")" ${source_json_path}` ]]; then
+    echo "cand static path is ${cand_static_path}, arg is ${arg}" >> ${__jact_log_path}
+    if [ $arg = "--add" ] || [ $arg = "--remove" ]; then
+      echo $source_json_path
+      return 0;
+    elif [[ -n `jq "try(${cand_static_path}) | select(type==\"string\")" ${source_json_path}` ]]; then
       source_json_path=`jq -r ${cand_static_path} ${source_json_path}`
       
       if [[ "${source_json_path:0:1}" != "/"  && "${source_json_path:0:1}" != "~" ]]; then
@@ -26,11 +30,14 @@ _make_path_%__jact_function_name%()
       static_path="."
     elif [[ `jq "try(${static_path}) | has(\"${arg}\")" ${source_json_path}` == "true" ]]; then
       static_path=${cand_static_path}
+      echo "static path is ${static_path}" >> ${__jact_log_path}
     elif [[ `jq "try(${static_path}) | has(\"__exec\")" ${source_json_path}` == "true" ]]; then
       params+="\'${arg}\' "
+      echo "params is ${params}" >> ${__jact_log_path}
     else
+      echo "else..." >> ${__jact_log_path}
       echo $source_json_path
-      return 1;
+      return 0;
     fi
   done
 
@@ -52,31 +59,7 @@ _get_raw_static_path_%__jact_function_name%() {
   local static_path params source_json_path
   read source_json_path static_path params <<< $(_make_path_%__jact_function_name% "$@")
   if [[ -z $static_path ]]; then
-    # check --add option is specified or not
-    args=("$@")
-    static_path="."
-    local new_command=""
-    for (( i=1; i<=$#; i++ ));
-    do
-        arg=${args[$i]}
-        if [ "$arg" = "--add" ]; then
-          ((i++))
-          new_command=${args[$i]}
-          break
-        fi
-        static_path+=."$arg"
-    done
-    static_path=`echo $static_path | sed 's/\.\./\./g'`
-
-    if [[ -n ${new_command} ]]; then
-      new_command=$(printf "\"%s\"" "$(echo ${new_command} | sed 's/"/\\"/g')")
-      local result=`jq "${static_path}.__exec = ${new_command}" ${source_json_path}`
-      if [[ -n $result ]]; then
-        echo -E $result > $source_json_path
-      fi
-    else
-      echo "JACT Error: no path is defined at [$@] in \"%__jact_source_json_path%\""
-    fi
+    bash ${__jact_root_dir}/jact-helper.sh $source_json_path $@
     return 1;
   fi
 
@@ -88,7 +71,7 @@ _get_raw_static_path_%__jact_function_name%() {
     echo "JACT Error: no execution command is defined for: [${raw_static_path}]"
     local sub_commands=`jq -r "${static_path} | keys[]" ${source_json_path} | grep -v "^_" | sed 's/^/\t/'`
     if [[ -n $sub_commands ]]; then
-      echo "However [${raw_static_path}] has `echo {$sub_commands} | wc -l` subcommands...!\n${sub_commands}"
+      echo "However [${raw_static_path}] has `echo {$sub_commands} | wc -l` subcommands...\n${sub_commands}"
     fi
     return 1
   fi
