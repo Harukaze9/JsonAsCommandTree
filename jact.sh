@@ -69,10 +69,10 @@ _get_raw_static_path_%__jact_function_name%() {
 
   if [[ $command_body == "null" ]]; then
     local raw_static_path=`_get_raw_static_path_%__jact_function_name% $@`
-    echo "JACT Error: no execution command is defined for: [${raw_static_path}]"
+    echo "JACT Error: No command defined for execution: [${raw_static_path}]"
     local sub_commands=`jq -r "${static_path} | keys[]" ${source_json_path} | grep -v "^_" | sed 's/^/\t/'`
     if [[ -n $sub_commands ]]; then
-      echo "However [${raw_static_path}] has `echo {$sub_commands} | wc -l` subcommands... (use '--list' for detail) \n${sub_commands}"
+      echo "However [${raw_static_path}] contains `echo {$sub_commands} | wc -l` subcommands. (Use '--list' for detail) \n${sub_commands}"
     fi
     return 1
   fi
