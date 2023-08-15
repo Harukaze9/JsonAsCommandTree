@@ -43,7 +43,7 @@ elif [ $is_remove = 1 ]; then
     echo -E $result > $source_json_path
 elif [ $is_list = 1 ]; then
     echo "all executable subcommands at [`echo $raw_static_path | sed 's/ --list//'`]"
-    jq ${static_path} source/mm.json| jq 'path(..) as $p | select(getpath($p)? | objects? and has("__exec")) | {($p | join(".")): (getpath($p).__exec)}' | jq -s 'add'
+    jq ${static_path} ${source_json_path} | jq 'path(..) as $p | select(getpath($p)? | objects? and has("__exec")) | {($p | join(".")): (getpath($p).__exec)}' | jq -s 'add'
 else
     echo "JACT Error: no path is defined at [$@] in $source_json_path"
 fi
