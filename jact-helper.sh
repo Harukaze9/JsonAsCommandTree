@@ -9,7 +9,7 @@ get_static_path() {
     local static_path="."
     for arg in "${args[@]}"; do
         case "$arg" in
-            "--add" | "--remove" | "--list")
+            "--add" | "--remove" | "--list" | "--copy")
                 break
                 ;;
             *)
@@ -42,6 +42,22 @@ handle_list() {
     jq "$1" "$source_json_path" | jq 'path(..) as $p | select(getpath($p)? | objects? and has("__exec")) | {($p | join(".")): (getpath($p).__exec)}' | jq -s 'add'
 }
 
+handle_copy() {
+    local result=$(jq -r "$1"."__exec" "$source_json_path")
+    
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+        # MacOS
+        echo "$result" | pbcopy
+    elif [[ "$OSTYPE" == "linux-gnu"* && -e /proc/version ]] && grep -iq microsoft /proc/version; then
+        # WSL2
+        echo "$result" | clip.exe
+    else
+        # UNIX系
+        echo "$result" | xclip -selection clipboard
+    fi
+    echo "Copied to clipboard! [$result]"
+}
+
 main() {
     local static_path=$(get_static_path)
     local operation=""
@@ -59,6 +75,9 @@ main() {
             "--list")
                 operation="list"
                 ;;
+            "--copy")
+                operation="copy"
+                ;;
         esac
     done
 
@@ -71,6 +90,9 @@ main() {
             ;;
         "list")
             handle_list "$static_path"
+            ;;
+        "copy")
+            handle_copy "$static_path"
             ;;
         *)
             echo "JACT Error: no path is defined at [$@] in $source_json_path"
