@@ -35,7 +35,7 @@ _make_path_%__jact_function_name%()
       params+="\'${arg}\' "
       echo "params is ${params}" >> ${__jact_log_path}
     else
-      echo "else..." >> ${__jact_log_path}
+      echo "else... ${arg}" >> ${__jact_log_path}
       echo $source_json_path
       return 0;
     fi
@@ -117,15 +117,33 @@ __completion_%__jact_function_name%()
 {
   COMPREPLY=()
 
+  is_given_option=0
+  if [[ "${COMP_WORDS[COMP_CWORD]}" == -* ]]; then
+    is_given_option=1
+  fi
+
   local static_path params source_json_path
   read source_json_path static_path params <<< $(_make_path_%__jact_function_name% ${COMP_WORDS[@]:1:(COMP_CWORD-1)})
   params=`echo "$params" | tr '.' ' ' | xargs`
+
+  # echo "params are $params" >> ${__jact_log_path}
+  # echo "original values are ${COMP_WORDS[@]:1:(COMP_CWORD-1)}" >> ${__jact_log_path}
+  # echo "last word is ${COMP_WORDS[COMP_CWORD]}" >> ${__jact_log_path}
+
+  # if the path does not exist
+  if [[ -z "${static_path}" ]]; then
+    if [[ $is_given_option -eq 1 ]]; then
+    COMPREPLY+=("--add")
+    fi
+    return;
+  fi
 
   local root_jq_result=`jq -r "try (${static_path} | keys[] | @sh)" ${source_json_path}`
   local trimed_jq_result=`echo $root_jq_result | sed -E "s/'_[^ ]*//g"` # filter out words start from _
 
   local completion_list
   if [[ -n "${trimed_jq_result// }" ]]; then
+    # case 1. if subcommands are defined
     completion_list=${trimed_jq_result}
   elif [[ ${root_jq_result[@]} =~ "__exec" ]]; then
     local param_num=`echo ${params} | wc -w | sed 's/ //g'`
@@ -134,12 +152,11 @@ __completion_%__jact_function_name%()
     exec_command=`jq -r "try (${jq_filter})" ${source_json_path}`
     
     if [[ ${exec_command} != "null" ]]; then
-      # if completion command is defined...
+      # case2. if completion command is defined...
       completion_list=`eval ${exec_command}`
     else
-      # if completion command is not defined...
-
-      # --- emulates default completion of shell -------
+      # case3. if completion command is not defined
+      # emulates default completion of shell
       local cur="${COMP_WORDS[COMP_CWORD]}"
       for comp in $(compgen -f -- "$cur"); do
           if [ -d "$comp" ]; then
@@ -147,6 +164,9 @@ __completion_%__jact_function_name%()
           fi
           COMPREPLY+=("$comp")
       done
+      if [[ $is_given_option -eq 1 ]]; then
+        COMPREPLY+=("--copy")
+      fi
       if [ ${#COMPREPLY[@]} -eq 1 ] && [ "${COMPREPLY[0]%/}" != "${COMPREPLY[0]}" ]; then
           # Remove space after completion of a directory. No apparent way to make it compatible between bash and zsh.
           if [ -n "$BASH_VERSION" ]; then
@@ -158,6 +178,10 @@ __completion_%__jact_function_name%()
       return
       # ---------------------------------
     fi
+  fi
+
+  if [[ $is_given_option -eq 1 ]]; then
+    completion_list="$completion_list --list"
   fi
 
   COMPREPLY=( `compgen -W "${completion_list}" -- ${COMP_WORDS[COMP_CWORD]}` );
