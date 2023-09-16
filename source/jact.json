@@ -52,5 +52,12 @@
     "rename": {
         "__exec": "mv ${__jact_source_dir}/{0}.json ${__jact_source_dir}/{1}.json; jact _refresh",
         "__0": "find ${__jact_source_dir} -maxdepth 1  \\( -type f -o -type l \\) -name '*.json' -exec basename {} .json \\;"
+    },
+    "new": {
+        "__exec": "echo \"{}\" > ${__jact_source_dir}/{0}.json; jact _refresh"
+    },
+    "remove": {
+        "__exec": "rm ${__jact_source_dir}/{0}.json && echo '[{0}] is removed!\n' && jact _refresh && jact list",
+        "__0": "find ${__jact_source_dir} -maxdepth 1  \\( -type f -o -type l \\) -name '*.json' -exec basename {} .json \\;"
     }
 }
