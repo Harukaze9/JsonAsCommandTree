@@ -22,7 +22,9 @@ get_static_path() {
 
 handle_add() {
     local new_command_escaped=$(printf "\"%s\"" "$(echo $1 | sed 's/"/\\"/g')")
-    local result=$(jq "${2}.__exec = ${new_command_escaped}" "$source_json_path")
+    local target_path=${2}
+    [ "$target_path" == "." ] && target_path=""
+    local result=$(jq "${target_path}.__exec = ${new_command_escaped}" "$source_json_path")
     echo -E "$result" > "$source_json_path"
 }
 
@@ -37,6 +39,7 @@ handle_remove() {
 }
 
 handle_list() {
+    echo "list..." | ${__jact_logger_path}
     local list_prefix=$(echo "$raw_static_path" | sed 's/ --list//')
     echo "all executable subcommands at [$list_prefix]"
     jq "$1" "$source_json_path" | jq 'path(..) as $p | select(getpath($p)? | objects? and has("__exec")) | {($p | join(".")): (getpath($p).__exec)}' | jq -s 'add'
@@ -62,6 +65,7 @@ main() {
     local static_path=$(get_static_path)
     local operation=""
     local new_command_value=""
+    echo "handle..." | ${__jact_logger_path}
 
     for (( i=0; i<${#args[@]}; i++ )); do
         case "${args[$i]}" in

@@ -14,7 +14,8 @@ else
   __jact_root_dir=$(dirname ${0})
 fi
 
-__jact_log_path="${__jact_root_dir}/jact.log"
+__jact_logger_path="${__jact_root_dir}/jact-debug-logger.sh"
+export __jact_logger_path
 __jact_config_path="${__jact_root_dir}/config.json"
 __jact_generated_dir="${__jact_root_dir}/generated"
 __jact_source_dir="${__jact_root_dir}/source"

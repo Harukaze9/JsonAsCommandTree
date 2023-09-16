@@ -9,7 +9,7 @@ _make_path_%__jact_function_name%()
   for arg in "$@"
   do
     local cand_static_path=`echo ${static_path}.\"${arg}\"  | sed "s/\.\././g"`
-    echo "cand static path is ${cand_static_path}, arg is ${arg}" >> ${__jact_log_path}
+    echo "cand static path is ${cand_static_path}, arg is ${arg}"  | ${__jact_logger_path}
     if [ $arg = "--add" ] || [ $arg = "--remove" ] || [ $arg = "--list" ] || [ $arg = "--copy" ]; then
       echo $source_json_path
       return 0;
@@ -30,12 +30,12 @@ _make_path_%__jact_function_name%()
       static_path="."
     elif [[ `jq "try(${static_path}) | has(\"${arg}\")" ${source_json_path}` == "true" ]]; then
       static_path=${cand_static_path}
-      echo "static path is ${static_path}" >> ${__jact_log_path}
+      echo "static path is ${static_path}" | ${__jact_logger_path}
     elif [[ `jq "try(${static_path}) | has(\"__exec\")" ${source_json_path}` == "true" ]]; then
       params+="\'${arg}\' "
-      echo "params is ${params}" >> ${__jact_log_path}
+      echo "params is ${params}" | ${__jact_logger_path}
     else
-      echo "else... ${arg}" >> ${__jact_log_path}
+      echo "else... ${arg}" | ${__jact_logger_path}
       echo $source_json_path
       return 0;
     fi
@@ -126,9 +126,9 @@ __completion_%__jact_function_name%()
   read source_json_path static_path params <<< $(_make_path_%__jact_function_name% ${COMP_WORDS[@]:1:(COMP_CWORD-1)})
   params=`echo "$params" | tr '.' ' ' | xargs`
 
-  # echo "params are $params" >> ${__jact_log_path}
-  # echo "original values are ${COMP_WORDS[@]:1:(COMP_CWORD-1)}" >> ${__jact_log_path}
-  # echo "last word is ${COMP_WORDS[COMP_CWORD]}" >> ${__jact_log_path}
+  # echo "params are $params" | ${__jact_logger_path}
+  # echo "original values are ${COMP_WORDS[@]:1:(COMP_CWORD-1)}" | ${__jact_logger_path}
+  # echo "last word is ${COMP_WORDS[COMP_CWORD]}" | ${__jact_logger_path}
 
   # if the path does not exist
   if [[ -z "${static_path}" ]]; then
