@@ -1,7 +1,6 @@
 # ================== special json keys ====================== #
 __jact_exec_key="__exec"
 __jact_comp_key="__"
-__jact_default_key="__default"
 
 # =============== load script paths ==================== #
 # Use script's location as the root directory

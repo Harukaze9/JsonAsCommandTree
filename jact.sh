@@ -49,7 +49,8 @@ _get_command_by_arguments_%__jact_function_name%() {
 
   command_keys=(
     "${__jact_exec_key}"
-    "${__jact_default_key}"
+    "${__jact_exec_key}2"
+    "${__jact_exec_key}3"
     )
 
   for command_key in $command_keys; do
