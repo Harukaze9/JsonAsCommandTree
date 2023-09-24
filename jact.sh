@@ -44,16 +44,6 @@ _make_path_%__jact_function_name%()
   echo $source_json_path $static_path $params 
 )
 
-_get_raw_static_path_%__jact_function_name%() {
-  local raw_static_path=""
-  local args=("$@") 
-  local valid_command_num=$(( ${#args[@]} - count))
-  for ((i = 0; i < ${valid_command_num}; i++)); do
-    raw_static_path+=" ${args[i+1]}"
-  done
-  echo "%__jact_function_name%${raw_static_path}"
-}
-
 _get_command_by_arguments_%__jact_function_name%() {
   local args=("$@")
 
@@ -94,16 +84,16 @@ _get_command_by_arguments_%__jact_function_name%() {
 %__jact_function_name%() {
   local static_path params source_json_path
   read source_json_path static_path params <<< $(_make_path_%__jact_function_name% "$@")
+  eval "param_array=($params)" # create array by single quoted words
+
+  local raw_static_path="%__jact_function_name% ${@:1:$#-${#param_array[@]}}" # space separated static path to display in CLI text
 
   # Perform special operations (--add, --remove, --list) or display error if static_path is not found.
   if [[ -z $static_path ]]; then
-    local raw_static_path=`_get_raw_static_path_%__jact_function_name% $@`
     bash ${__jact_root_dir}/jact-helper.sh $source_json_path $raw_static_path $@
     return 1;
   fi
 
-
-  eval "param_array=($params)" # create array by single quoted words
   local command_body=`_get_command_by_arguments_%__jact_function_name% $param_array`
 
   echo "returned value is ${command_body}" | ${__jact_logger_path}
@@ -111,9 +101,8 @@ _get_command_by_arguments_%__jact_function_name%() {
   if [[ $command_body == "null" ]]; then
     local jq_filter=`echo ${static_path}.${__jact_exec_key} | sed "s/\.\././g"`
     local command_body=`jq -r ${jq_filter} ${source_json_path}`
-    local raw_static_path=`_get_raw_static_path_%__jact_function_name% $@`
     if [[ $command_body != "null" ]]; then
-      echo "JACT Error: arguments number is not matched to any commands of [%__jact_function_name%${raw_static_path}]\nexecution command format is: \"`jq -r ${jq_filter} ${source_json_path}`\""
+      echo "JACT Error: arguments number is invalid for [${raw_static_path}]\nexecution command format is: \"`jq -r ${jq_filter} ${source_json_path}`\""
     else
       echo "JACT Error: No command defined for execution: [${raw_static_path}]"
       local sub_commands=`jq -r "${static_path} | keys[]" ${source_json_path} | grep -v "^_" | sed 's/^/\t/'`

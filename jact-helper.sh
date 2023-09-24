@@ -99,7 +99,7 @@ main() {
             handle_copy "$static_path"
             ;;
         *)
-            echo "JACT Error: no path is defined at [${args[@]}] in $source_json_path"
+            echo "JACT Error: no path is defined at [${raw_static_path}] in $source_json_path"
             ;;
     esac
 }
