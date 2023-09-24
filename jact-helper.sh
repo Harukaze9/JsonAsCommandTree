@@ -21,20 +21,22 @@ get_static_path() {
 }
 
 handle_add() {
-    local new_command_escaped=$(printf "\"%s\"" "$(echo $1 | sed 's/"/\\"/g')")
-    local target_path=${2}
+    local target_path=${1}
+    local new_command_escaped=$(printf "\"%s\"" "$(echo $2 | sed 's/"/\\"/g')")
     [ "$target_path" == "." ] && target_path=""
     local result=$(jq "${target_path}.__exec = ${new_command_escaped}" "$source_json_path")
     echo -E "$result" > "$source_json_path"
 }
 
 handle_remove() {
-    local path="$1"
-    local result=$(jq "del(${path})" "$source_json_path")
-    while [[ -n "$path" && "`echo $result | jq ${path}`" == "{}" ]]; do
-        result=$(jq "del(${path})" "$source_json_path")
-        path=$(echo "$path" | sed 's/\.[^\.]*"$//')
-    done
+    local path=$1
+    local remove_command=$2
+    echo "remove command is ${remove_command}"
+    if [[ -z $remove_command ]]; then
+      echo "JACT Error: you need to specify a subcommand to remove!"
+      return 1
+    fi
+    local result=$(jq "del(${path}.${remove_command})" "$source_json_path")
     echo -E "$result" > "$source_json_path"
 }
 
@@ -64,17 +66,18 @@ handle_copy() {
 main() {
     local static_path=$(get_static_path)
     local operation=""
-    local new_command_value=""
+    local command_param=""
     echo "handle..." | ${__jact_logger_path}
 
     for (( i=0; i<${#args[@]}; i++ )); do
         case "${args[$i]}" in
             "--add")
                 operation="add"
-                new_command_value="${args[$((i+1))]}"
+                command_param="${args[$((i+1))]}"
                 ;;
             "--remove")
                 operation="remove"
+                command_param="${args[$((i+1))]}"
                 ;;
             "--list")
                 operation="list"
@@ -87,10 +90,10 @@ main() {
 
     case "$operation" in
         "add")
-            handle_add "$new_command_value" "$static_path"
+            handle_add "$static_path" "$command_param"
             ;;
         "remove")
-            handle_remove "$static_path"
+            handle_remove "$static_path" "$command_param"
             ;;
         "list")
             handle_list "$static_path"
