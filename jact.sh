@@ -11,7 +11,8 @@ _make_path_%__jact_function_name%()
     local cand_static_path=`echo ${static_path}.\"${arg}\"  | sed "s/\.\././g"`
     echo "cand static path is ${cand_static_path}, arg is ${arg}"  | ${__jact_logger_path}
     if [ $arg = "--add" ] || [ $arg = "--remove" ] || [ $arg = "--list" ] || [ $arg = "--copy" ]; then
-      echo $source_json_path
+      params+="\'${arg}\' "
+      echo $source_json_path $static_path "Operation" $params
       return 0;
     elif [[ -n `jq "try(${cand_static_path}) | select(type==\"string\")" ${source_json_path}` ]]; then
       source_json_path=`jq -r ${cand_static_path} ${source_json_path}`
@@ -41,7 +42,7 @@ _make_path_%__jact_function_name%()
     fi
   done
 
-  echo $source_json_path $static_path $params 
+  echo $source_json_path $static_path "Regular" $params
 )
 
 _get_command_by_arguments_%__jact_function_name%() {
@@ -83,14 +84,14 @@ _get_command_by_arguments_%__jact_function_name%() {
 
 # main func
 %__jact_function_name%() {
-  local static_path params source_json_path
-  read source_json_path static_path params <<< $(_make_path_%__jact_function_name% "$@")
+  local static_path params source_json_path command_type hoge
+  read source_json_path static_path command_type params <<< $(_make_path_%__jact_function_name% "$@")
   eval "param_array=($params)" # create array by single quoted words
 
   local raw_static_path="%__jact_function_name% ${@:1:$#-${#param_array[@]}}" # space separated static path to display in CLI text
 
   # Perform special operations (--add, --remove, --list) or display error if static_path is not found.
-  if [[ -z $static_path ]]; then
+  if [[ $command_type != "Regular" ]]; then
     bash ${__jact_root_dir}/jact-helper.sh $source_json_path $raw_static_path $@
     return 1;
   fi
@@ -137,9 +138,10 @@ __completion_%__jact_function_name%()
   read source_json_path static_path params <<< $(_make_path_%__jact_function_name% ${COMP_WORDS[@]:1:(COMP_CWORD-1)})
   params=`echo "$params" | tr '.' ' ' | xargs`
 
-  # echo "params are $params" | ${__jact_logger_path}
-  # echo "original values are ${COMP_WORDS[@]:1:(COMP_CWORD-1)}" | ${__jact_logger_path}
-  # echo "last word is ${COMP_WORDS[COMP_CWORD]}" | ${__jact_logger_path}
+  # echo "(completion) params are $params" | ${__jact_logger_path}
+  # echo "(completion) original values are ${COMP_WORDS[@]:1:(COMP_CWORD-1)}" | ${__jact_logger_path}
+  # echo "(completion) last word is ${COMP_WORDS[COMP_CWORD]}" | ${__jact_logger_path}
+  # echo "(completion) static path is ${static_path}"  | ${__jact_logger_path}
 
   # if the path does not exist
   if [[ -z "${static_path}" ]]; then
@@ -191,7 +193,7 @@ __completion_%__jact_function_name%()
   fi
 
   if [[ $is_given_option -eq 1 ]]; then
-    completion_list="$completion_list --list"
+    completion_list="$completion_list --list --remove"
   fi
 
   COMPREPLY=( `compgen -W "${completion_list}" -- ${COMP_WORDS[COMP_CWORD]}` );
