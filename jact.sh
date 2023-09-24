@@ -135,8 +135,8 @@ __completion_%__jact_function_name%()
     is_given_option=1
   fi
 
-  local static_path params source_json_path
-  read source_json_path static_path params <<< $(_make_path_%__jact_function_name% ${COMP_WORDS[@]:1:(COMP_CWORD-1)})
+  local static_path params source_json_path command_type
+  read source_json_path static_path command_type params <<< $(_make_path_%__jact_function_name% ${COMP_WORDS[@]:1:(COMP_CWORD-1)})
   params=`echo "$params" | tr '.' ' ' | xargs`
 
   # echo "(completion) params are $params" | ${__jact_logger_path}
@@ -164,9 +164,11 @@ __completion_%__jact_function_name%()
     local comp_command="${__jact_comp_key}${param_num}"
     local jq_filter=`echo ${static_path}.${comp_command} | sed "s/\.\././g"` # remove duplicated .
     exec_command=`jq -r "try (${jq_filter})" ${source_json_path}`
+    # echo "(completion) exec_command is ${exec_command}" | ${__jact_logger_path}
     
     if [[ ${exec_command} != "null" ]]; then
       # case2. if completion command is defined...
+      # "${exec_command} is executed as a completion command" | ${__jact_logger_path}
       completion_list=`eval ${exec_command}`
     else
       # case3. if completion command is not defined
