@@ -54,6 +54,42 @@ _get_raw_static_path_%__jact_function_name%() {
   echo "%__jact_function_name%${raw_static_path}"
 }
 
+_get_command_by_arguments_%__jact_function_name%() {
+  local args=("$@")
+
+  command_keys=(
+    "${__jact_exec_key}"
+    "${__jact_default_key}"
+    )
+
+  for command_key in $command_keys; do
+    local jq_filter=`echo ${static_path}.${command_key} | sed "s/\.\././g"`
+    local command_body=`jq -r ${jq_filter} ${source_json_path}`
+    if [[ $command_body != "null" ]]; then
+      local index=0
+      while [[ "$command_body" == *"{${index}}"* ]]; do
+        ((index++))
+      done
+
+      if [[ "$index" -eq "$#" ]]; then
+      # replace {N} tag
+      local count=0
+      for element in "${args[@]}"; do
+        arg=`echo $element | sed "s/'//g"`
+        command_body=`echo $command_body | sed "s#{${count}}#${arg}#g"` # use '#' as a sed seperator.
+        ((count++))
+      done
+      echo "command body is... " $command_body | ${__jact_logger_path}
+      echo $command_body
+      return;
+      fi
+    fi
+    echo "command key is ${command_key} and index is ${index}" | ${__jact_logger_path}
+  done
+
+  echo "null"
+}
+
 # main func
 %__jact_function_name%() {
   local static_path params source_json_path
@@ -66,47 +102,33 @@ _get_raw_static_path_%__jact_function_name%() {
     return 1;
   fi
 
-  local jq_filter=`echo ${static_path}.${__jact_exec_key} | sed "s/\.\././g"`
-  local command_body=`jq -r ${jq_filter} ${source_json_path}`
+
+  eval "param_array=($params)" # create array by single quoted words
+  local command_body=`_get_command_by_arguments_%__jact_function_name% $param_array`
+
+  echo "returned value is ${command_body}" | ${__jact_logger_path}
 
   if [[ $command_body == "null" ]]; then
-    local raw_static_path=`_get_raw_static_path_%__jact_function_name% $@`
-    echo "JACT Error: No command defined for execution: [${raw_static_path}]"
-    local sub_commands=`jq -r "${static_path} | keys[]" ${source_json_path} | grep -v "^_" | sed 's/^/\t/'`
-    if [[ -n $sub_commands ]]; then
-      echo "However [${raw_static_path}] contains `echo {$sub_commands} | wc -l` subcommands. (Use '--list' for details.) \n${sub_commands}"
+    local jq_filter=`echo ${static_path}.${__jact_exec_key} | sed "s/\.\././g"`
+    local command_body=`jq -r ${jq_filter} ${source_json_path}`
+    if [[ $command_body != "null" ]]; then
+      local raw_static_path=`_get_raw_static_path_%__jact_function_name% $@`
+      echo "JACT Error: arguments are not enough for [%__jact_function_name%${raw_static_path}]\nexecution command format is: \"`jq -r ${jq_filter} ${source_json_path}`\""
+    else
+      local raw_static_path=`_get_raw_static_path_%__jact_function_name% $@`
+      echo "JACT Error: No command defined for execution: [${raw_static_path}]"
+      local sub_commands=`jq -r "${static_path} | keys[]" ${source_json_path} | grep -v "^_" | sed 's/^/\t/'`
+      if [[ -n $sub_commands ]]; then
+        echo "However [${raw_static_path}] contains `echo {$sub_commands} | wc -l` subcommands. (Use '--list' for details.) \n${sub_commands}"
+      fi
     fi
     return 1
   fi
-
-  local count=0
-  eval "param_array=($params)" # create array by single quoted words
-
-  # replace {N} tag
-  for element in "${param_array[@]}"; do
-    arg=`echo $element | sed "s/'//g"`
-    command_body=`echo $command_body | sed "s#{${count}}#${arg}#g"` # use '#' as a sed seperator.
-    ((count++))
-  done
 
   # replace {SELF} tag
   if [[ $command_body =~ "\{SELF\}" ]]; then
     local command_basename=`basename %__jact_source_json_path% .json`
     command_body=`echo $command_body | sed "s#{SELF}#${command_basename}#g"` # use '#' as a sed seperator.
-  fi
-
-  # if arguments are not enough
-  if [[ $command_body =~ "\{[0-9]\}" ]]; then
-    # check default command
-    local default_jq_filter=`echo ${static_path}.${__jact_default_key} | sed "s/\.\././g"`
-    command_body=`jq -r "try(${default_jq_filter})" ${source_json_path}`
-
-    # show error if default command is not exist
-    if [[ $command_body =~ "null" ]]; then
-      local raw_static_path=`_get_raw_static_path_%__jact_function_name% $@`
-      echo "JACT Error: arguments are not enough for [%__jact_function_name%${raw_static_path}]\nexecution command format is: \"`jq -r ${jq_filter} ${source_json_path}`\""
-      return 1;
-    fi
   fi
 
   eval ${command_body}
@@ -176,7 +198,6 @@ __completion_%__jact_function_name%()
           fi
       fi
       return
-      # ---------------------------------
     fi
   fi
 
