@@ -84,6 +84,7 @@ _get_command_by_arguments_%__jact_function_name%() {
 
 # main func
 %__jact_function_name%() {
+  echo "jact original input is $@" | ${__jact_logger_path}
   local static_path params source_json_path command_type hoge
   read source_json_path static_path command_type params <<< $(_make_path_%__jact_function_name% "$@")
   eval "param_array=($params)" # create array by single quoted words
@@ -179,6 +180,7 @@ __completion_%__jact_function_name%()
       done
       if [[ $is_given_option -eq 1 ]]; then
         COMPREPLY+=("--copy")
+        COMPREPLY+=("--remove")
       fi
       if [ ${#COMPREPLY[@]} -eq 1 ] && [ "${COMPREPLY[0]%/}" != "${COMPREPLY[0]}" ]; then
           # Remove space after completion of a directory. No apparent way to make it compatible between bash and zsh.
@@ -193,7 +195,7 @@ __completion_%__jact_function_name%()
   fi
 
   if [[ $is_given_option -eq 1 ]]; then
-    completion_list="$completion_list --list --remove"
+    completion_list="$completion_list --list"
   fi
 
   COMPREPLY=( `compgen -W "${completion_list}" -- ${COMP_WORDS[COMP_CWORD]}` );

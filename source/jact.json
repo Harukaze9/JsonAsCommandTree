@@ -54,7 +54,8 @@
         "__0": "find ${__jact_source_dir} -maxdepth 1  \\( -type f -o -type l \\) -name '*.json' -exec basename {} .json \\;"
     },
     "new": {
-        "__exec": "echo \"{}\" > ${__jact_source_dir}/{0}.json; jact _refresh"
+        "__exec": "echo \"{}\" > ${__jact_source_dir}/{0}.json; jact _refresh",
+        "__exec2": "{SELF} new {0}; {0} --add '{1}'"
     },
     "remove": {
         "__exec": "rm ${__jact_source_dir}/{0}.json && echo '[{0}] is removed!\n' && jact _refresh && jact list",

@@ -1,5 +1,4 @@
 #!/bin/bash
-
 source_json_path="$1"
 raw_static_path="$2"
 shift 2
@@ -39,7 +38,6 @@ handle_remove() {
 }
 
 handle_list() {
-    echo "list..." | ${__jact_logger_path}
     local list_prefix=$(echo "$raw_static_path" | sed 's/ --list//')
     echo "all executable subcommands at [$list_prefix]"
     jq "$1" "$source_json_path" | jq 'path(..) as $p | select(getpath($p)? | objects? and has("__exec")) | {($p | join(".")): (getpath($p).__exec)}' | jq -s 'add'
@@ -65,7 +63,6 @@ main() {
     local static_path=$(get_static_path)
     local operation=""
     local new_command_value=""
-    echo "handle..." | ${__jact_logger_path}
 
     for (( i=0; i<${#args[@]}; i++ )); do
         case "${args[$i]}" in
