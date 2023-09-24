@@ -111,11 +111,10 @@ _get_command_by_arguments_%__jact_function_name%() {
   if [[ $command_body == "null" ]]; then
     local jq_filter=`echo ${static_path}.${__jact_exec_key} | sed "s/\.\././g"`
     local command_body=`jq -r ${jq_filter} ${source_json_path}`
+    local raw_static_path=`_get_raw_static_path_%__jact_function_name% $@`
     if [[ $command_body != "null" ]]; then
-      local raw_static_path=`_get_raw_static_path_%__jact_function_name% $@`
-      echo "JACT Error: arguments are not enough for [%__jact_function_name%${raw_static_path}]\nexecution command format is: \"`jq -r ${jq_filter} ${source_json_path}`\""
+      echo "JACT Error: arguments number is not matched to any commands of [%__jact_function_name%${raw_static_path}]\nexecution command format is: \"`jq -r ${jq_filter} ${source_json_path}`\""
     else
-      local raw_static_path=`_get_raw_static_path_%__jact_function_name% $@`
       echo "JACT Error: No command defined for execution: [${raw_static_path}]"
       local sub_commands=`jq -r "${static_path} | keys[]" ${source_json_path} | grep -v "^_" | sed 's/^/\t/'`
       if [[ -n $sub_commands ]]; then
