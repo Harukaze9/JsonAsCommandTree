@@ -93,7 +93,7 @@ _get_command_by_arguments_%__jact_function_name%() {
 
   # Perform special operations (--add, --remove, --list) or display error if static_path is not found.
   if [[ $command_type != "Regular" ]]; then
-    bash ${__jact_root_dir}/jact-helper.sh $source_json_path $raw_static_path $@
+    bash ${__jact_root_dir}/jact-helper.sh "$source_json_path" "$raw_static_path" "$@"
     return 1;
   fi
 
